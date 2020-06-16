@@ -15,6 +15,7 @@ import Analytics from './Analytics';
 import Help from './Help';
 import Settings from './Settings';
 import NotFound from './NotFound';
+import getCookie from '../utils/getCookie';
 
 const history = qhistory(
     createBrowserHistory({}),
@@ -24,9 +25,7 @@ const history = qhistory(
 
 const App = (props) => {
 
-    const token = false;
-
-    if (!token) {
+    if (!getCookie('token')) {
         return (
             <Router history={history}>
                 <Header type='outer' />

@@ -244,6 +244,11 @@ nav .nav-wrapper i {
   font-size: 0.9em;
 }
 
+.modal-error {
+  color: red;
+  margin-bottom: 10px;
+}
+
 .submit-wrap {
   margin-top: 30px;
   margin-bottom: 10px;

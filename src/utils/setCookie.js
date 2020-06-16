@@ -16,3 +16,5 @@ function setCookie(name, value, options = {}) {
   
     document.cookie = updatedCookie;
 }
+
+export default setCookie;

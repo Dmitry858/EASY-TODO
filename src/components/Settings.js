@@ -7,7 +7,7 @@ const Settings = (props) => {
 
     return (
         <React.Fragment>
-            <Topbar />
+            <Topbar history={props.history} />
 
             <div className="content content-inner">
                 <div className="container">

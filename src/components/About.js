@@ -6,7 +6,7 @@ const About = (props) => {
 
     return (
         <React.Fragment>
-            {(props.type === 'inner') && <Topbar />}
+            {(props.type === 'inner') && <Topbar history={props.history} />}
 
             <div className={(props.type === 'inner') ? 'content content-inner' : 'content'}>
                 <div className="container">

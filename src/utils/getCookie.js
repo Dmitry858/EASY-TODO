@@ -4,3 +4,5 @@ function getCookie(name) {
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
+
+export default getCookie;
