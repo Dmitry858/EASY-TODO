@@ -241,7 +241,24 @@ nav .nav-wrapper i {
 }
 
 .modal .modal-footer {
+  position: relative;
   font-size: 0.9em;
+}
+
+.preloader-wrapper {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: -22px;
+  left: calc(50% - 8px);
+}
+
+.spinner-blue-only {
+  border-color: #bf360c;
+}
+
+.circle-clipper .circle {
+  border-width: 2px;
 }
 
 .modal-error {

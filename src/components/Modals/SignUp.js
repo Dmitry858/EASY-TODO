@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Checkbox } from 'react-materialize';
+import { Modal, Checkbox, Preloader } from 'react-materialize';
 import config from '../../config';
 import setCookie from '../../utils/setCookie';
 
@@ -9,6 +9,7 @@ const SignUp = (props) => {
     let [login, setLogin] = useState('');
     let [password, setPassword] = useState('');
     let [agreement, setAgreement] = useState(true);
+    let [preloader, setPreloader] = useState(false);
     let [error, setError] = useState('');
 
     const loginRegExp = /[\s><\?\.,\'\"`~!@№#$%\^&\*)(\+=/\\|\]\[\{\}:;]/g,
@@ -28,6 +29,8 @@ const SignUp = (props) => {
             setError('Слишком короткий пароль');
             return;
         }
+
+        setPreloader(true);
 
         fetch(config.baseURL + '/web/signup', {
             method: 'POST',
@@ -51,14 +54,17 @@ const SignUp = (props) => {
                         type: 'HAS_TOKEN',
                         payload: true
                     });
+                    setPreloader(false);
                 }
 
                 if (data.error) {
                     setError(data.error);
+                    setPreloader(false);
                 }
             })
             .catch( (err) => {
                 console.log(err);
+                setPreloader(false);
             });
     }
 
@@ -66,6 +72,7 @@ const SignUp = (props) => {
         <Modal
             actions={[
                 <div className="modal-close">
+                    <Preloader active={preloader} />
                     <div className="modal-error">{error}</div>
                     Уже зарегистрированы? <a className="modal-trigger" href="#modal-signin">Войти в систему</a>
                 </div>
