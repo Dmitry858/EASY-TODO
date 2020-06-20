@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Checkbox, Preloader } from 'react-materialize';
 import config from '../../config';
@@ -11,9 +11,55 @@ const SignUp = (props) => {
     let [agreement, setAgreement] = useState(true);
     let [preloader, setPreloader] = useState(false);
     let [error, setError] = useState('');
+    let [submit, setSubmit] = useState(false);
 
     const loginRegExp = /[\s><\?\.,\'\"`~!@№#$%\^&\*)(\+=/\\|\]\[\{\}:;]/g,
           passwordRegExp = /[\s><.,\'\":;]/g;
+
+    useEffect(() => {
+        if (!submit) return;
+        let cleanupFunction = false;
+
+        fetch(config.baseURL + '/web/signup', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                'username': login,
+                'password': password
+            })
+        })
+            .then( response => response.json() )
+            .then( (data) => {
+                setSubmit(false);
+
+                if (data.access_token) {
+                    let options = {
+                        path: '/', 
+                        secure: true
+                    };
+                    setCookie('token', data.access_token, options);
+                    setCookie('userId', data.user_id, options);
+
+                    props.dispatch({
+                        type: 'HAS_TOKEN',
+                        payload: true
+                    });
+                    if(!cleanupFunction) setPreloader(false);
+                }
+
+                if (data.error) {
+                    setError(data.error);
+                    setPreloader(false);
+                }
+            })
+            .catch( (err) => {
+                console.log(err);
+                setPreloader(false);
+                setSubmit(false);
+            });
+
+        return () => cleanupFunction = true;
+    }, [submit]);
 
     function resetForm() {
         setLogin('');
@@ -31,41 +77,7 @@ const SignUp = (props) => {
         }
 
         setPreloader(true);
-
-        fetch(config.baseURL + '/web/signup', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                'username': login,
-                'password': password
-            })
-        })
-            .then( response => response.json() )
-            .then( (data) => {
-                if (data.access_token) {
-                    let options = {
-                        path: '/', 
-                        secure: true
-                    };
-                    setCookie('token', data.access_token, options);
-                    setCookie('userId', data.user_id, options);
-
-                    props.dispatch({
-                        type: 'HAS_TOKEN',
-                        payload: true
-                    });
-                    setPreloader(false);
-                }
-
-                if (data.error) {
-                    setError(data.error);
-                    setPreloader(false);
-                }
-            })
-            .catch( (err) => {
-                console.log(err);
-                setPreloader(false);
-            });
+        setSubmit(true);
     }
 
     return (

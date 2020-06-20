@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Checkbox, Preloader } from 'react-materialize';
 import config from '../../config';
@@ -11,17 +11,11 @@ const SignIn = (props) => {
     let [remember, setRemember] = useState(true);
     let [preloader, setPreloader] = useState(false);
     let [error, setError] = useState('');
+    let [submit, setSubmit] = useState(false);
 
-    function resetForm() {
-        setLogin('');
-        setPassword('');
-        setError('');
-    }
-
-    function submitData(event) {
-        event.preventDefault();
-        setError('');
-        setPreloader(true);
+    useEffect(() => {
+        if (!submit) return;
+        let cleanupFunction = false;
 
         fetch(config.baseURL + '/web/login', {
             method: 'POST',
@@ -33,6 +27,8 @@ const SignIn = (props) => {
         })
             .then( response => response.json() )
             .then( (data) => {
+                setSubmit(false);
+
                 if (data.access_token) {
                     let options = {
                         path: '/', 
@@ -48,7 +44,7 @@ const SignIn = (props) => {
                         type: 'HAS_TOKEN',
                         payload: true
                     });
-                    setPreloader(false);
+                    if(!cleanupFunction) setPreloader(false);
                 }
 
                 if (data.error) {
@@ -59,7 +55,23 @@ const SignIn = (props) => {
             .catch( (err) => {
                 console.log(err);
                 setPreloader(false);
+                setSubmit(false);
             });
+
+        return () => cleanupFunction = true;
+    }, [submit]);
+
+    function resetForm() {
+        setLogin('');
+        setPassword('');
+        setError('');
+    }
+
+    function submitData(event) {
+        event.preventDefault();
+        setError('');
+        setPreloader(true);
+        setSubmit(true);
     }
 
     return (
