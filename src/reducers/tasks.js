@@ -1,14 +1,14 @@
 const initialState = {
-    lists: [],
+    lists: null,
 };
   
 const actions = {
-    'ADD_LIST': addList,
+    'ADD_LISTS': addLists,
 };
   
-function addList(state, action) {
+function addLists(state, action) {
     return {
-        lists: [...state.lists, action.payload],
+        lists: action.payload
     }
 }
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const MenuItems = (props) => {
+    let {type, tasks} = props;
 
-    if (props.type === 'outer') {
+    if (type === 'outer') {
         return (
             <React.Fragment>
                 <li>
@@ -27,15 +29,19 @@ const MenuItems = (props) => {
 
     return (
         <React.Fragment>
-            <li>
+            <li className={(tasks.lists && tasks.lists.length > 0) ? 'has-submenu' : ''}>
                 <NavLink exact to={'/'} className="sidenav-close">
                     <i className="fa fa-list-alt" aria-hidden="true"></i>Списки задач
                 </NavLink>
-                <ul className="submenu">
-                    <li className="submenu-item">
-                        <NavLink exact to={'/list/1'} className="sidenav-close">Работа</NavLink>
-                    </li>
-                </ul>
+                {(tasks.lists && tasks.lists.length > 0) &&
+                    <ul className="submenu">
+                        {tasks.lists.map((item, i) =>
+                            <li key={i} className="submenu-item">
+                                <NavLink exact to={`/list/${item.list_id}`} className="sidenav-close">{item.name}</NavLink>
+                            </li>
+                        )}
+                    </ul>
+                }
             </li>
             <li>
                 <NavLink exact to={'/archive'} className="sidenav-close">
@@ -71,4 +77,4 @@ const MenuItems = (props) => {
     );
 };
 
-export default MenuItems;
+export default connect(state => state)(MenuItems);

@@ -6,7 +6,17 @@ import NotFound from './NotFound';
 
 const List = (props) => {
 
-    if (props.match.params.id !== '1') return <NotFound type={'inner'} />;
+    let {lists} = props.tasks;
+
+    if(!lists) return <NotFound type={'inner'} />;
+
+    if(lists) {
+        let result = lists.find(function(item) {
+            return parseInt(item.list_id, 10) === parseInt(props.match.params.id, 10);
+        });
+
+        if(!result) return <NotFound type={'inner'} />;
+    }
 
     return (
         <React.Fragment>

@@ -41,11 +41,11 @@ a:hover {
   color: #4272d7 !important;
 }
 
-.header-inner .main-menu li:not(.submenu-item):first-child, .sidenav li:not(.submenu-item):first-child {
+.header-inner .main-menu li.has-submenu, .sidenav li.has-submenu {
   position: relative;
 }
 
-.header-inner .main-menu li:not(.submenu-item):first-child::after, .sidenav li:not(.submenu-item):first-child::after {
+.header-inner .main-menu li.has-submenu::after, .sidenav li.has-submenu::after {
   position: absolute;
   right: 25px;
   font-family: 'FontAwesome';
@@ -54,7 +54,7 @@ a:hover {
   color: initial;
 }
 
-.header-inner .main-menu li:first-child::after {
+.header-inner .main-menu li.has-submenu::after {
   top: 14px;
 }
 
@@ -62,7 +62,7 @@ a:hover {
   display: none;
 }
 
-.sidenav li:first-child::after {
+.sidenav li.has-submenu::after {
   top: 1px;
 }
 
@@ -245,12 +245,16 @@ nav .nav-wrapper i {
   font-size: 0.9em;
 }
 
-.preloader-wrapper {
+.modal .preloader-wrapper {
   position: absolute;
   width: 16px;
   height: 16px;
   top: -22px;
   left: calc(50% - 8px);
+}
+
+.content-inner .preloader-wrapper {
+  left: calc(50% - 13px);
 }
 
 .spinner-blue-only {

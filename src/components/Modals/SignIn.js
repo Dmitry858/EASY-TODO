@@ -32,7 +32,7 @@ const SignIn = (props) => {
                 if (data.access_token) {
                     let options = {
                         path: '/', 
-                        secure: true
+                        // secure: true
                     };
                     if (remember) {
                         options['max-age'] = config.cookieMaxAge;

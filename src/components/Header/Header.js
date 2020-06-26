@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import logo from '../../img/logo-white.png';
-import { SideNav } from 'react-materialize';
+import { SideNav, Toast } from 'react-materialize';
 import M from 'materialize-css';
 import MenuItems from './MenuItems';
 
@@ -41,9 +41,13 @@ const Header = (props) => {
                     </SideNav>
 
                     {props.type === 'inner' && 
-                        <a className="notice-link" href="#" onclick="M.toast({html: 'Данная функция в разработке'})">
-                            <i className="fa fa-bell" aria-hidden="true"></i>
-                        </a>
+                        <Toast
+                            options={{
+                                html: 'Данная функция в разработке'
+                            }}
+                        >
+                            <a className="notice-link" href="#"><i className="fa fa-bell" aria-hidden="true"></i></a>
+                        </Toast>
                     }
                 </div>
             </nav>

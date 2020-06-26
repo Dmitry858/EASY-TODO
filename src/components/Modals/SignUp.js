@@ -35,7 +35,7 @@ const SignUp = (props) => {
                 if (data.access_token) {
                     let options = {
                         path: '/', 
-                        secure: true
+                        // secure: true
                     };
                     setCookie('token', data.access_token, options);
                     setCookie('userId', data.user_id, options);
