@@ -1,5 +1,5 @@
 const initialState = {
-    lists: null,
+    lists: sessionStorage.getItem('lists') ? JSON.parse(sessionStorage.getItem('lists')) : null,
 };
   
 const actions = {

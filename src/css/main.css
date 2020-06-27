@@ -458,6 +458,10 @@ nav .nav-wrapper i {
   width: 50%;
 }
 
+.not-allowed {
+  cursor: not-allowed;
+}
+
 @media screen and (max-width: 1360px) {
   .action {
     padding-right: 0 !important;

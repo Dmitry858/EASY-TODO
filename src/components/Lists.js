@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import Topbar from './Topbar';
 import CreateList from './Modals/CreateList';
 import { Preloader } from 'react-materialize';
+import ReactTooltip from 'react-tooltip';
 import config from '../config';
 import getCookie from '../utils/getCookie';
 
@@ -23,6 +24,8 @@ const Lists = (props) => {
             })
                 .then(response => response.json())
                 .then((data) => {
+                    sessionStorage.setItem('lists', JSON.stringify(data));
+
                     props.dispatch({
                         type: 'ADD_LISTS',
                         payload: data
@@ -35,6 +38,44 @@ const Lists = (props) => {
                 });   
         }     
     }, []);
+
+    function editList(isOwner, event) {
+        event.preventDefault();
+        if(!isOwner) return;
+        
+        console.log('редактирование');
+    }
+
+    function deleteList(isOwner, listId, event) {
+        event.preventDefault();
+        if(!isOwner) return;
+        
+        fetch(config.baseURL + `/web/lists/${listId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${getCookie('token')}`
+            }
+        })
+            .then((response) => {
+                if(response.status === 204) {
+                    let i = lists.findIndex(item => item.list_id == listId);
+
+                    if(i === -1) return;
+
+                    lists.splice(i, 1);
+
+                    sessionStorage.setItem('lists', JSON.stringify(lists));
+
+                    props.dispatch({
+                        type: 'ADD_LISTS',
+                        payload: lists
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
     return (
         <React.Fragment>
@@ -59,24 +100,47 @@ const Lists = (props) => {
                     }
 
                     {(lists && lists.length > 0) && 
-                        lists.map((list, i) =>
-                            <div key={i} className="tasks-list">
-                                <div className="list-name">{list.name}</div>
-                                <div className="list-desс">{list.description}</div>
-                                <div className="control-buttons">
-                                    <a className="control-button" href="#">
-                                        <i className="fa fa-lock" aria-hidden="true"></i>
-                                    </a>
-                                    <a className="control-button" href="#">
-                                        <i className="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
-                                    <a className="control-button" href="#">
-                                        <i className="fa fa-trash-o" aria-hidden="true"></i>
-                                    </a> 
+                        lists.map((list, i) => {
+                            let isOwner = list.user_id == getCookie('userId');
+
+                            return (
+                                <div key={i} className="tasks-list">
+                                    <div className="list-name">{list.name}</div>
+                                    <div className="list-desс">{list.description}</div>
+                                    <div className="control-buttons">
+                                        <a 
+                                            className="control-button" 
+                                            href="#" 
+                                            data-tip={list.is_private == 1 ? 'Личный список' : 'Групповой список'}
+                                            onClick={(event) => {event.preventDefault()}}
+                                        >
+                                            <i className={list.is_private == 1 ? 'fa fa-lock' : 'fa fa-unlock'} aria-hidden="true"></i>
+                                        </a>
+
+                                        <a 
+                                            className={isOwner ? 'control-button' : 'control-button not-allowed'} 
+                                            href="#"
+                                            data-tip={isOwner ? '' : 'Изменение настроек доступно только создателю списка'}
+                                            onClick={editList.bind(this, isOwner)}
+                                        >
+                                            <i className="fa fa-pencil" aria-hidden="true"></i>
+                                        </a>
+
+                                        <a 
+                                            className={isOwner ? 'control-button' : 'control-button not-allowed'} 
+                                            href="#"
+                                            data-tip={isOwner ? '' : 'Удаление доступно только создателю списка'}
+                                            onClick={deleteList.bind(this, isOwner, list.list_id)}
+                                        >
+                                            <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                        </a> 
+
+                                        <ReactTooltip effect="solid" />
+                                    </div>
+                                    <NavLink exact to={`/list/${list.list_id}`} className="list-link"></NavLink>
                                 </div>
-                                <NavLink exact to={`/list/${list.list_id}`} className="list-link"></NavLink>
-                            </div>
-                        )
+                            )
+                        })
                     }
 
                 </div>
