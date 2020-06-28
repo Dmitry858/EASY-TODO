@@ -270,6 +270,10 @@ nav .nav-wrapper i {
   margin-bottom: 10px;
 }
 
+.modal-success {
+  color: green;
+}
+
 .submit-wrap {
   margin-top: 30px;
   margin-bottom: 10px;

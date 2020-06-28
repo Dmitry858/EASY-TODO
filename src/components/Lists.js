@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Topbar from './Topbar';
 import CreateList from './Modals/CreateList';
+import EditList from './Modals/EditList';
 import { Preloader } from 'react-materialize';
 import ReactTooltip from 'react-tooltip';
 import config from '../config';
@@ -38,13 +39,6 @@ const Lists = (props) => {
                 });   
         }     
     }, []);
-
-    function editList(isOwner, event) {
-        event.preventDefault();
-        if(!isOwner) return;
-        
-        console.log('редактирование');
-    }
 
     function deleteList(isOwner, listId, event) {
         event.preventDefault();
@@ -118,10 +112,10 @@ const Lists = (props) => {
                                         </a>
 
                                         <a 
-                                            className={isOwner ? 'control-button' : 'control-button not-allowed'} 
-                                            href="#"
+                                            className={isOwner ? 'control-button modal-trigger' : 'control-button not-allowed'} 
+                                            href={isOwner ? '#modal-edit-list' : '#'}
                                             data-tip={isOwner ? '' : 'Изменение настроек доступно только создателю списка'}
-                                            onClick={editList.bind(this, isOwner)}
+                                            onClick={(event) => {event.preventDefault()}}
                                         >
                                             <i className="fa fa-pencil" aria-hidden="true"></i>
                                         </a>
@@ -138,6 +132,16 @@ const Lists = (props) => {
                                         <ReactTooltip effect="solid" />
                                     </div>
                                     <NavLink exact to={`/list/${list.list_id}`} className="list-link"></NavLink>
+                                    
+                                    {isOwner && 
+                                        <EditList 
+                                            id={list.list_id}
+                                            name={list.name} 
+                                            description={list.description} 
+                                            is_private={list.is_private}
+                                            guests={list.guests}
+                                        />
+                                    }
                                 </div>
                             )
                         })
