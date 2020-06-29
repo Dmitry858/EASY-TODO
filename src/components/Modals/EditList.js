@@ -32,7 +32,13 @@ const EditList = (props) => {
 
         if (name !== props.name) changes.name = name;
         if (description !== props.description) changes.description = description;
-        if (isPrivate !== Boolean(props.is_private)) changes.is_private = Number(isPrivate);
+        if (isPrivate !== Boolean(props.is_private)) {
+            changes.is_private = Number(isPrivate);
+            if (isPrivate) {
+                setGuests('');
+                changes.guests = JSON.stringify([]);
+            }
+        }
         if (guests !== guestsLogins) {
             let guestsArr = guests.split(',');
             changes.guests = JSON.stringify(guestsArr);
@@ -75,8 +81,14 @@ const EditList = (props) => {
 
     function submitData(event) {
         event.preventDefault();
-        setError('');
         setSuccess('');
+
+        if (name.length > 15) {
+            setError('Превышена максимальная длина названия списка');
+            return;
+        }
+
+        setError('');
         setPreloader(true);
         setSubmit(true);
     }
@@ -149,7 +161,7 @@ const EditList = (props) => {
                             type="text" 
                             value={guests} 
                             placeholder="Введите логины пользователей через запятую"
-                            onChange={event => setGuests(event.target.value)}
+                            onChange={event => setGuests(event.target.value.replace(/\s/g, ''))}
                         />
                     }
 
