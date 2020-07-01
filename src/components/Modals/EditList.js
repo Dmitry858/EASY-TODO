@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, Preloader } from 'react-materialize';
 import config from '../../config';
 import getCookie from '../../utils/getCookie';
+import regExp from '../../utils/regExp';
 
 const EditList = (props) => {
 
@@ -21,9 +22,6 @@ const EditList = (props) => {
     let [error, setError] = useState('');
     let [success, setSuccess] = useState('');
     let [submit, setSubmit] = useState(false);
-
-    const nameRegExp = /[\s><\?\.,\'\"`~!@№#$%\^&\*)(\+=/\\|\]\[\{\}:;]/g,
-          descRegExp = /[><\'\"`~#\^/\\|\]\[\{\};]/g;
 
     useEffect(() => {
         if (!submit) return;
@@ -125,7 +123,7 @@ const EditList = (props) => {
                             name="name" 
                             className="validate"
                             value={name}
-                            onChange={event => setName(event.target.value.replace(nameRegExp, ''))}
+                            onChange={event => setName(event.target.value.replace(regExp.name, ''))}
                             required
                         />
                         <label className={name ? "active" : ""} htmlFor={`list${props.id}-name`}>Название</label>
@@ -138,7 +136,7 @@ const EditList = (props) => {
                             name="description" 
                             className="validate"
                             value={description}
-                            onChange={event => setDescription(event.target.value.replace(descRegExp, ''))}
+                            onChange={event => setDescription(event.target.value.replace(regExp.desc, ''))}
                         />
                         <label className={description ? "active" : ""} htmlFor={`list${props.id}-desc`}>Описание</label>
                     </div>

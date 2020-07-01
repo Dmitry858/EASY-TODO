@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, Checkbox, Preloader } from 'react-materialize';
 import config from '../../config';
 import setCookie from '../../utils/setCookie';
+import regExp from '../../utils/regExp';
 
 const SignUp = (props) => {
 
@@ -12,9 +13,6 @@ const SignUp = (props) => {
     let [preloader, setPreloader] = useState(false);
     let [error, setError] = useState('');
     let [submit, setSubmit] = useState(false);
-
-    const loginRegExp = /[\s><\?\.,\'\"`~!@№#$%\^&\*)(\+=/\\|\]\[\{\}:;]/g,
-          passwordRegExp = /[\s><.,\'\":;]/g;
 
     useEffect(() => {
         if (!submit) return;
@@ -112,7 +110,7 @@ const SignUp = (props) => {
                             name="login" 
                             className="validate" 
                             value={login} 
-                            onChange={event => setLogin(event.target.value.replace(loginRegExp, ''))}
+                            onChange={event => setLogin(event.target.value.replace(regExp.login, ''))}
                             required
                         />
                         <label htmlFor="login-signup">Логин</label>
@@ -124,7 +122,7 @@ const SignUp = (props) => {
                             name="password" 
                             className="validate"
                             value={password} 
-                            onChange={event => setPassword(event.target.value.replace(passwordRegExp, ''))}
+                            onChange={event => setPassword(event.target.value.replace(regExp.password, ''))}
                             required
                         />
                         <label htmlFor="password-signup">Пароль</label>

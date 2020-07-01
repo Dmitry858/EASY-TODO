@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, Preloader } from 'react-materialize';
 import config from '../../config';
 import getCookie from '../../utils/getCookie';
+import regExp from '../../utils/regExp';
 
 const CreateList = (props) => {
 
@@ -14,9 +15,6 @@ const CreateList = (props) => {
     let [error, setError] = useState('');
     let [submit, setSubmit] = useState(false);
     let [isCreated, setIsCreated] = useState(false);
-
-    const nameRegExp = /[\s><\?\.,\'\"`~!@№#$%\^&\*)(\+=/\\|\]\[\{\}:;]/g,
-          descRegExp = /[><\'\"`~#\^/\\|\]\[\{\};]/g;
 
     useEffect(() => {
         if(!submit) return;
@@ -124,7 +122,7 @@ const CreateList = (props) => {
                             name="name" 
                             className="validate" 
                             value={name}
-                            onChange={event => setName(event.target.value.replace(nameRegExp, ''))}
+                            onChange={event => setName(event.target.value.replace(regExp.name, ''))}
                         />
                         <label htmlFor="create-list-name">Название</label>
                         <span className="helper-text">не более 15 символов</span>
@@ -136,7 +134,7 @@ const CreateList = (props) => {
                             name="description" 
                             className="validate" 
                             value={description}
-                            onChange={event => setDescription(event.target.value.replace(descRegExp, ''))}
+                            onChange={event => setDescription(event.target.value.replace(regExp.desc, ''))}
                         />
                         <label htmlFor="create-list-desc">Описание</label>
                     </div>
