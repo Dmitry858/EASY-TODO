@@ -105,7 +105,7 @@ const EditList = (props) => {
             bottomSheet={false}
             fixedFooter={false}
             header={`Редактирование списка задач «${props.name}»`}
-            id="modal-edit-list"
+            id={`modal-edit-list${props.id}`}
             className="modal"
             open={false}
             options={{
@@ -120,7 +120,7 @@ const EditList = (props) => {
                 <form action="" method="" onSubmit={submitData}>
                     <div className="input-field">
                         <input 
-                            id="list-name" 
+                            id={`list${props.id}-name`} 
                             type="text" 
                             name="name" 
                             className="validate"
@@ -128,19 +128,19 @@ const EditList = (props) => {
                             onChange={event => setName(event.target.value.replace(nameRegExp, ''))}
                             required
                         />
-                        <label className={name ? "active" : ""} htmlFor="list-name">Название</label>
+                        <label className={name ? "active" : ""} htmlFor={`list${props.id}-name`}>Название</label>
                         <span className="helper-text">не более 15 символов</span>
                     </div>
                     <div className="input-field">
                         <input 
-                            id="list-desc" 
+                            id={`list${props.id}-desc`} 
                             type="text" 
                             name="description" 
                             className="validate"
                             value={description}
                             onChange={event => setDescription(event.target.value.replace(descRegExp, ''))}
                         />
-                        <label className={description ? "active" : ""} htmlFor="list-desc">Описание</label>
+                        <label className={description ? "active" : ""} htmlFor={`list${props.id}-desc`}>Описание</label>
                     </div>
                     <p>Открыть доступ для других пользователей</p>
                     <div className="switch">

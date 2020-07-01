@@ -113,7 +113,7 @@ const Lists = (props) => {
 
                                         <a 
                                             className={isOwner ? 'control-button modal-trigger' : 'control-button not-allowed'} 
-                                            href={isOwner ? '#modal-edit-list' : '#'}
+                                            href={isOwner ? `#modal-edit-list${list.list_id}` : '#'}
                                             data-tip={isOwner ? '' : 'Изменение настроек доступно только создателю списка'}
                                             onClick={(event) => {event.preventDefault()}}
                                         >
