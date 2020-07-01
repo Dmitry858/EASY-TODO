@@ -22,7 +22,7 @@ const Header = (props) => {
 
                     <div className="main-menu-wrap">
                         <ul className="main-menu hide-on-med-and-down">
-                            <MenuItems type={props.type} />
+                            <MenuItems type={props.type} history={props.history} />
                         </ul>
                     </div>
 
@@ -37,7 +37,7 @@ const Header = (props) => {
                             </a>
                         }
                     >
-                        <MenuItems type={props.type} />
+                        <MenuItems type={props.type} history={props.history} />
                     </SideNav>
 
                     {props.type === 'inner' && 

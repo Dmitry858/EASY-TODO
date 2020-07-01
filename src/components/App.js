@@ -28,7 +28,7 @@ const App = (props) => {
     if (!getCookie('token')) {
         return (
             <Router history={history}>
-                <Header type='outer' />
+                <Header type='outer' history={history} />
 
                 <Switch>
                     <Route exact path='/about' component={About} />
@@ -44,7 +44,7 @@ const App = (props) => {
     } else {
         return (
             <Router history={history}>
-                <Header type='inner' />
+                <Header type='inner' history={history} />
 
                 <Switch>
                     <Route 

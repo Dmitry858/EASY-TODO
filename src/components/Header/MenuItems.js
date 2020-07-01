@@ -1,9 +1,24 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import deleteCookie from '../../utils/deleteCookie';
 
 const MenuItems = (props) => {
     let {type, tasks} = props;
+
+    function signOut(event) {
+        event.preventDefault();
+
+        deleteCookie('token');
+        deleteCookie('userId');
+        sessionStorage.removeItem('lists');
+
+        props.dispatch({
+            type: 'HAS_TOKEN',
+            payload: false
+        });
+        props.history.push('/');
+    }
 
     if (type === 'outer') {
         return (
@@ -69,7 +84,7 @@ const MenuItems = (props) => {
                 </NavLink>
             </li>
             <li>
-                <a href="#" className="sidenav-close">
+                <a href="#" className="sidenav-close" onClick={signOut}>
                     <i className="fa fa-sign-out" aria-hidden="true"></i>Выход
                 </a>
             </li>
