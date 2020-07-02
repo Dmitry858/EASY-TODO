@@ -10,12 +10,16 @@ const Topbar = (props) => {
 
         deleteCookie('token');
         deleteCookie('userId');
-        sessionStorage.removeItem('lists');
 
         props.dispatch({
             type: 'HAS_TOKEN',
             payload: false
         });
+        props.dispatch({
+            type: 'ADD_LISTS',
+            payload: null
+        });
+
         props.history.push('/');
     }
 

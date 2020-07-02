@@ -26,6 +26,8 @@ const history = qhistory(
 const App = (props) => {
 
     if (!getCookie('token')) {
+        sessionStorage.removeItem('lists');
+
         return (
             <Router history={history}>
                 <Header type='outer' history={history} />
