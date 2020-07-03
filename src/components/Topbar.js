@@ -16,6 +16,10 @@ const Topbar = (props) => {
             payload: false
         });
         props.dispatch({
+            type: 'UPDATE_CATEGORIES',
+            payload: []
+        });
+        props.dispatch({
             type: 'ADD_LISTS',
             payload: null
         });

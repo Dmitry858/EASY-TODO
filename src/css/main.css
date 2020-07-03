@@ -152,6 +152,18 @@ nav .nav-wrapper i {
   color: inherit;
 }
 
+.dropdown-content li {
+  min-height: 44px;
+}
+
+.dropdown-content li > span {
+  padding: 11px 16px;
+}
+
+ul.dropdown-content.select-dropdown {
+  max-height: 220px;
+}
+
 .filter-row {
   margin-top: -10px;
   margin-bottom: 5px;

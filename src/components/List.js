@@ -95,7 +95,7 @@ const List = (props) => {
                                     <div className="task-name">{task.name}</div>
                                     <div className="task-category">{task.category ? task.category : '-'}</div>
                                     <div className="task-date">{task.date ? task.date : '-'}</div>
-                                    <div className="task-status">{task.status === 0 ? 'Выполнить' : 'Выполнена'}</div>
+                                    <div className="task-status">{task.status === 1 ? 'Выполнена' : 'Выполнить'}</div>
                                     <div className="control-buttons">
                                         <a className="control-button" href="#">
                                             <i className="fa fa-pencil" aria-hidden="true"></i>
@@ -111,7 +111,7 @@ const List = (props) => {
                 </div>
             </div>
 
-            <CreateTask />
+            <CreateTask listId={props.match.params.id} listName={listName} />
         </React.Fragment>
     );
 

@@ -37,10 +37,15 @@ const SignUp = (props) => {
                     };
                     setCookie('token', data.access_token, options);
                     setCookie('userId', data.user_id, options);
+                    localStorage.setItem('categories', data.categories);
 
                     props.dispatch({
                         type: 'HAS_TOKEN',
                         payload: true
+                    });
+                    props.dispatch({
+                        type: 'UPDATE_CATEGORIES',
+                        payload: JSON.parse(data.categories)
                     });
                     if(!cleanupFunction) setPreloader(false);
                 }

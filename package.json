@@ -11,6 +11,7 @@
     "qhistory": "^1.0.3",
     "qs": "^6.9.4",
     "react": "^16.13.1",
+    "react-datepicker": "^3.0.0",
     "react-dom": "^16.13.1",
     "react-materialize": "^3.9.2",
     "react-redux": "^7.2.0",

@@ -27,6 +27,7 @@ const App = (props) => {
 
     if (!getCookie('token')) {
         sessionStorage.removeItem('lists');
+        localStorage.removeItem('categories');
 
         return (
             <Router history={history}>

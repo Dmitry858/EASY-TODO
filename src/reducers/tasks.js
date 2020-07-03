@@ -7,6 +7,7 @@ const actions = {
     'ADD_LISTS': addLists,
     'ADD_NEW_LIST': addNewList,
     'ADD_ITEMS': addItems,
+    'ADD_NEW_ITEM': addNewItem,
 };
   
 function addLists(state, action) {
@@ -30,6 +31,18 @@ function addItems(state, action) {
     return {
         lists: state.lists,
         items: [...state.items, action.payload]
+    }
+}
+
+function addNewItem(state, action) {
+    const modifiedItems = state.items.map(item => {
+        if(item.list_id == action.payload.list_id) item.tasks.push(action.payload.task);
+        return item;
+    });
+
+    return {
+        lists: state.lists,
+        items: modifiedItems
     }
 }
 
