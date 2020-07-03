@@ -53,6 +53,31 @@ const List = (props) => {
         listName = result.name;
     }
 
+    function deleteTask(taskId, event) {
+        event.preventDefault();
+        
+        fetch(config.baseURL + `/web/tasks/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${getCookie('token')}`
+            }
+        })
+            .then((response) => {
+                if(response.status === 204) {
+                    props.dispatch({
+                        type: 'DELETE_ITEM',
+                        payload: {
+                            list_id: parseInt(props.match.params.id, 10),
+                            task_id: parseInt(taskId, 10)
+                        }
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
     return (
         <React.Fragment>
             <Topbar history={props.history} />
@@ -93,14 +118,16 @@ const List = (props) => {
                                         </label>
                                     </div>
                                     <div className="task-name">{task.name}</div>
-                                    <div className="task-category">{task.category ? task.category : '-'}</div>
+                                    <div className="task-category">
+                                        {task.category ? task.category[0].toUpperCase() + task.category.slice(1) : '-'}
+                                    </div>
                                     <div className="task-date">{task.date ? task.date : '-'}</div>
                                     <div className="task-status">{task.status === 1 ? 'Выполнена' : 'Выполнить'}</div>
                                     <div className="control-buttons">
                                         <a className="control-button" href="#">
                                             <i className="fa fa-pencil" aria-hidden="true"></i>
                                         </a>
-                                        <a className="control-button" href="#">
+                                        <a className="control-button" href="#" onClick={deleteTask.bind(this, task.task_id)}>
                                             <i className="fa fa-trash-o" aria-hidden="true"></i>
                                         </a> 
                                     </div>
