@@ -11,18 +11,21 @@ import regExp from '../../utils/regExp';
 
 registerLocale('ru', ru);
 
-const CreateTask = (props) => {
+const EditTask = (props) => {
 
-    let { categories } = props.user;
+    let { categories }     = props.user,
+        { task, listName } = props;
 
-    let [name, setName]           = useState(''),
-        [category, setCategory]   = useState(''),
-        [date, setDate]           = useState(''),
-        [time, setTime]           = useState(''),
+    let [name, setName]           = useState(task.name),
+        [category, setCategory]   = useState(task.category ? task.category: ''),
+        [date, setDate]           = useState(task.date ? new Date(task.date) : ''),
+        [time, setTime]           = useState((task.date && task.date.length > 10) ? new Date(task.date) : ''),
+        [status, setStatus]       = useState(task.status),
         [preloader, setPreloader] = useState(false),
         [error, setError]         = useState(''),
-        [submit, setSubmit]       = useState(false),
-        [isCreated, setIsCreated] = useState(false);
+        [submit, setSubmit]       = useState(false);
+
+    if(category && !categories.includes(category)) categories = [category, ...categories];
 
     useEffect(() => {
         if(!submit) return;
@@ -39,38 +42,42 @@ const CreateTask = (props) => {
             } 
         }
 
-        const newTask = {
-            'user_id': parseInt(getCookie('userId'), 10),
-            'list_id': parseInt(props.listId, 10),
-            'name': name,
-            'category': (category === '0' || category === '') ? null : category,
-            'date': dateStr,
-            'status': 0
-        }
+        const changes = {};
 
-        fetch(config.baseURL + '/web/tasks', {
-            method: 'POST',
+        if(name !== task.name) changes.name = name;
+        if(category !== task.category) changes.category = category;
+        changes.date = dateStr;
+        if(status !== task.status) changes.status = parseInt(status, 10);
+
+        fetch(config.baseURL + `/web/tasks/${task.task_id}`, {
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getCookie('token')}`
             },
-            body: JSON.stringify(newTask)
+            body: JSON.stringify(changes)
         })
             .then( response => response.json() )
             .then( (data) => {
                 setSubmit(false);
 
-                if(data.task_id) {
+                if (data.task_id) {
+                    props.dispatch({
+                        type: 'DELETE_ITEM',
+                        payload: {
+                            list_id: data.list_id,
+                            task_id: data.task_id
+                        }
+                    });
                     props.dispatch({
                         type: 'ADD_NEW_ITEM',
                         payload: {
-                            list_id: parseInt(props.listId, 10),
+                            list_id: data.list_id,
                             task: data
                         }
                     });
 
                     if(!cleanupFunction) setPreloader(false);
-                    setIsCreated(true);
                 }
             })
             .catch( (err) => {
@@ -81,14 +88,6 @@ const CreateTask = (props) => {
 
         return () => cleanupFunction = true;
     }, [submit]);
-
-    function resetForm() {
-        setName('');
-        setCategory('');
-        setDate('');
-        setTime('');
-        setError('');
-    }
 
     function submitData(event) {
         event.preventDefault();
@@ -108,8 +107,6 @@ const CreateTask = (props) => {
         setSubmit(true);
     }
 
-    if(isCreated) return null;
-
     return (
         <Modal
             actions={[
@@ -120,23 +117,22 @@ const CreateTask = (props) => {
             ]}
             bottomSheet={false}
             fixedFooter={false}
-            header="Новая задача"
-            id="modal-create-task"
+            header="Редактирование задачи"
+            id={`modal-edit-task${task.task_id}`}
             className="modal"
             open={false}
             options={{
                 dismissible: true,
                 endingTop: '10%',
                 preventScrolling: false,
-                startingTop: '4%',
-                onCloseStart: resetForm
+                startingTop: '4%'
             }}
         >
-            <div className="modal-content">
+            <div className="modal-content"> 
                 <form action="" method="" onSubmit={submitData}>
                     <div className="input-field">
                         <input 
-                            id="create-task-name" 
+                            id={`task${task.task_id}-name`} 
                             type="text" 
                             name="name" 
                             className="validate"
@@ -144,7 +140,7 @@ const CreateTask = (props) => {
                             onChange={event => setName(event.target.value.replace(regExp.desc, ''))}
                             required
                         />
-                        <label htmlFor="create-task-name">Задача</label>
+                        <label htmlFor="task-name" className="active">Задача</label>
                     </div>
 
                     <div className="input-group">
@@ -171,7 +167,7 @@ const CreateTask = (props) => {
 
                     <div className="input-field">
                         <Select
-                            id="Select-9"
+                            id={`Select-task${task.task_id}`}
                             multiple={false}
                             options={{
                                 classes: '',
@@ -187,10 +183,10 @@ const CreateTask = (props) => {
                             value={category}
                             onChange={event => setCategory(event.target.value)}
                         >
-                            <option value="" disabled>
+                            <option value="0" disabled>
                                 Категория
                             </option>
-                            <option value="0">
+                            <option value="">
                                 Без категории
                             </option>
                             {categories && 
@@ -203,13 +199,40 @@ const CreateTask = (props) => {
                         </Select>
                     </div>
 
+                    <div className="input-field status-select">
+                        <Select
+                            id={`status-task${task.task_id}`}
+                            multiple={false}
+                            options={{
+                                classes: '',
+                                dropdownOptions: {
+                                    alignment: 'left',
+                                    autoTrigger: true,
+                                    closeOnClick: true,
+                                    constrainWidth: true,
+                                    coverTrigger: true,
+                                    hover: false
+                                }
+                            }}
+                            value={status}
+                            onChange={event => setStatus(event.target.value)}
+                        >
+                            <option value="0">
+                                Выполнить
+                            </option>
+                            <option value="1">
+                                Выполнена
+                            </option>
+                        </Select>
+                    </div>
+
                     <div className="input-field tasks-list-name">
-                        <input disabled value={props.listName} id="tasks-list-name" type="text" className="validate" />
-                        <label htmlFor="tasks-list-name" className="active">Список задач</label>
+                        <input disabled value={listName} id={`list-name-task${task.task_id}`} type="text" className="validate" />
+                        <label htmlFor={`list-name-task${task.task_id}`} className="active">Список задач</label>
                     </div>
 
                     <div className="submit-wrap">
-                        <button className="waves-effect waves-green btn">Создать</button>
+                        <button className="waves-effect waves-green btn">Подтвердить</button>
                     </div>
                 </form>
             </div>
@@ -217,4 +240,4 @@ const CreateTask = (props) => {
     );
 };
 
-export default connect(state => state)(CreateTask);
+export default connect(state => state)(EditTask);

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Topbar from './Topbar';
 import CreateTask from './Modals/CreateTask';
+import EditTask from './Modals/EditTask';
 import NotFound from './NotFound';
 import { Preloader } from 'react-materialize';
 import config from '../config';
 import getCookie from '../utils/getCookie';
+import dateFormatting from '../utils/dateFormatting';
 
 const List = (props) => {
 
@@ -117,20 +119,29 @@ const List = (props) => {
                                             <span></span>
                                         </label>
                                     </div>
+
                                     <div className="task-name">{task.name}</div>
+
                                     <div className="task-category">
                                         {task.category ? task.category[0].toUpperCase() + task.category.slice(1) : '-'}
                                     </div>
-                                    <div className="task-date">{task.date ? task.date : '-'}</div>
+
+                                    <div className="task-date">
+                                        {dateFormatting(task.date)}
+                                    </div>
+
                                     <div className="task-status">{task.status === 1 ? 'Выполнена' : 'Выполнить'}</div>
+
                                     <div className="control-buttons">
-                                        <a className="control-button" href="#">
+                                        <a className="control-button modal-trigger" href={`#modal-edit-task${task.task_id}`}>
                                             <i className="fa fa-pencil" aria-hidden="true"></i>
                                         </a>
                                         <a className="control-button" href="#" onClick={deleteTask.bind(this, task.task_id)}>
                                             <i className="fa fa-trash-o" aria-hidden="true"></i>
                                         </a> 
                                     </div>
+
+                                    <EditTask task={task} listName={listName} />
                                 </div> 
                             )}
                         </>
