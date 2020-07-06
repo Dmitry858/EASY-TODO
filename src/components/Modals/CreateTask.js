@@ -15,14 +15,14 @@ const CreateTask = (props) => {
 
     let { categories } = props.user;
 
-    let [name, setName]           = useState(''),
-        [category, setCategory]   = useState(''),
-        [date, setDate]           = useState(''),
-        [time, setTime]           = useState(''),
-        [preloader, setPreloader] = useState(false),
-        [error, setError]         = useState(''),
-        [submit, setSubmit]       = useState(false),
-        [isCreated, setIsCreated] = useState(false);
+    let [name, setName]               = useState(''),
+        [category, setCategory]       = useState(''),
+        [date, setDate]               = useState(''),
+        [time, setTime]               = useState(''),
+        [preloader, setPreloader]     = useState(false),
+        [error, setError]             = useState(''),
+        [submit, setSubmit]           = useState(false),
+        [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         if(!submit) return;
@@ -69,8 +69,8 @@ const CreateTask = (props) => {
                         }
                     });
 
-                    if(!cleanupFunction) setPreloader(false);
-                    setIsCreated(true);
+                    setPreloader(false);
+                    setIsModalOpen(false);
                 }
             })
             .catch( (err) => {
@@ -106,9 +106,8 @@ const CreateTask = (props) => {
         setError('');
         setPreloader(true);
         setSubmit(true);
+        setIsModalOpen(true);
     }
-
-    if(isCreated) return null;
 
     return (
         <Modal
@@ -123,7 +122,7 @@ const CreateTask = (props) => {
             header="Новая задача"
             id="modal-create-task"
             className="modal"
-            open={false}
+            open={isModalOpen}
             options={{
                 dismissible: true,
                 endingTop: '10%',
@@ -144,7 +143,7 @@ const CreateTask = (props) => {
                             onChange={event => setName(event.target.value.replace(regExp.desc, ''))}
                             required
                         />
-                        <label htmlFor="create-task-name">Задача</label>
+                        <label htmlFor="create-task-name" className={name ? "active" : ""}>Задача</label>
                     </div>
 
                     <div className="input-group">
