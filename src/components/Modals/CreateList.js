@@ -7,18 +7,17 @@ import regExp from '../../utils/regExp';
 
 const CreateList = (props) => {
 
-    let [name, setName] = useState('');
-    let [description, setDescription] = useState('');
-    let [isPrivate, setIsPrivate] = useState(true);
-    let [guests, setGuests] = useState('');
-    let [preloader, setPreloader] = useState(false);
-    let [error, setError] = useState('');
-    let [submit, setSubmit] = useState(false);
-    let [isCreated, setIsCreated] = useState(false);
+    let [name, setName]               = useState(''),
+        [description, setDescription] = useState(''),
+        [isPrivate, setIsPrivate]     = useState(true),
+        [guests, setGuests]           = useState(''),
+        [preloader, setPreloader]     = useState(false),
+        [error, setError]             = useState(''),
+        [submit, setSubmit]           = useState(false),
+        [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         if(!submit) return;
-        let cleanupFunction = false;
 
         let guestsLogins = JSON.stringify([]);
 
@@ -55,8 +54,8 @@ const CreateList = (props) => {
                         payload: data
                     });
 
-                    if(!cleanupFunction) setPreloader(false);
-                    setIsCreated(true);
+                    setPreloader(false);
+                    setIsModalOpen(false);
                 }
             })
             .catch( (err) => {
@@ -65,7 +64,6 @@ const CreateList = (props) => {
                 setSubmit(false);
             });
 
-        return () => cleanupFunction = true;
     }, [submit]);
 
     function resetForm() {
@@ -87,9 +85,8 @@ const CreateList = (props) => {
         setError('');
         setPreloader(true);
         setSubmit(true);
+        setIsModalOpen(true);
     }
-
-    if(isCreated) return null;
 
     return (
         <Modal
@@ -104,7 +101,7 @@ const CreateList = (props) => {
             header="Новый список задач"
             id="modal-create-list"
             className="modal"
-            open={false}
+            open={isModalOpen}
             options={{
                 dismissible: true,
                 endingTop: '10%',
