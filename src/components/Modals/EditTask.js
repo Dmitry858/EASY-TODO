@@ -23,13 +23,13 @@ const EditTask = (props) => {
         [status, setStatus]       = useState(task.status),
         [preloader, setPreloader] = useState(false),
         [error, setError]         = useState(''),
-        [submit, setSubmit]       = useState(false);
+        [submit, setSubmit]       = useState(false),
+        [isModalOpen, setIsModalOpen] = useState(false);
 
     if(category && !categories.includes(category)) categories = [category, ...categories];
 
     useEffect(() => {
         if(!submit) return;
-        let cleanupFunction = false;
 
         let dateStr = null;
         if(date) {
@@ -63,21 +63,15 @@ const EditTask = (props) => {
 
                 if (data.task_id) {
                     props.dispatch({
-                        type: 'DELETE_ITEM',
-                        payload: {
-                            list_id: data.list_id,
-                            task_id: data.task_id
-                        }
-                    });
-                    props.dispatch({
-                        type: 'ADD_NEW_ITEM',
+                        type: 'UPDATE_ITEM',
                         payload: {
                             list_id: data.list_id,
                             task: data
                         }
                     });
 
-                    if(!cleanupFunction) setPreloader(false);
+                    setPreloader(false);
+                    setIsModalOpen(false);
                 }
             })
             .catch( (err) => {
@@ -86,7 +80,6 @@ const EditTask = (props) => {
                 setSubmit(false);
             });
 
-        return () => cleanupFunction = true;
     }, [submit]);
 
     function submitData(event) {
@@ -105,6 +98,7 @@ const EditTask = (props) => {
         setError('');
         setPreloader(true);
         setSubmit(true);
+        setIsModalOpen(true);
     }
 
     return (
@@ -120,7 +114,7 @@ const EditTask = (props) => {
             header="Редактирование задачи"
             id={`modal-edit-task${task.task_id}`}
             className="modal"
-            open={false}
+            open={isModalOpen}
             options={{
                 dismissible: true,
                 endingTop: '10%',

@@ -8,7 +8,8 @@ const actions = {
     'ADD_NEW_LIST': addNewList,
     'ADD_ITEMS': addItems,
     'ADD_NEW_ITEM': addNewItem,
-    'DELETE_ITEM': deleteItem
+    'DELETE_ITEM': deleteItem,
+    'UPDATE_ITEM': updateItem
 };
   
 function addLists(state, action) {
@@ -52,6 +53,21 @@ function deleteItem(state, action) {
         if(item.list_id == action.payload.list_id) {
             let i = item.tasks.findIndex(task => task.task_id === action.payload.task_id);
             if(i !== -1) item.tasks.splice(i, 1);
+        }
+        return item;
+    });
+
+    return {
+        lists: state.lists,
+        items: modifiedItems
+    }
+}
+
+function updateItem(state, action) {
+    const modifiedItems = state.items.map(item => {
+        if(item.list_id === action.payload.list_id) {
+            let i = item.tasks.findIndex(task => task.task_id === action.payload.task.task_id);
+            if(i !== -1) item.tasks.splice(i, 1, action.payload.task);
         }
         return item;
     });
