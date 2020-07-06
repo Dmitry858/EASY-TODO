@@ -1,32 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import deleteCookie from '../../utils/deleteCookie';
+import signOut from '../../utils/signOut';
 
 const MenuItems = (props) => {
     let {type, tasks} = props;
-
-    function signOut(event) {
-        event.preventDefault();
-
-        deleteCookie('token');
-        deleteCookie('userId');
-
-        props.dispatch({
-            type: 'HAS_TOKEN',
-            payload: false
-        });
-        props.dispatch({
-            type: 'UPDATE_CATEGORIES',
-            payload: []
-        });
-        props.dispatch({
-            type: 'ADD_LISTS',
-            payload: null
-        });
-
-        props.history.push('/');
-    }
 
     if (type === 'outer') {
         return (
@@ -92,7 +70,7 @@ const MenuItems = (props) => {
                 </NavLink>
             </li>
             <li>
-                <a href="#" className="sidenav-close" onClick={signOut}>
+                <a href="#" className="sidenav-close" onClick={event => props.dispatch(signOut(event, props.history))}>
                     <i className="fa fa-sign-out" aria-hidden="true"></i>Выход
                 </a>
             </li>
