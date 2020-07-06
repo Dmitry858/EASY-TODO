@@ -37,6 +37,7 @@ const SignUp = (props) => {
                     };
                     setCookie('token', data.access_token, options);
                     setCookie('userId', data.user_id, options);
+                    setCookie('login', data.login, options);
                     localStorage.setItem('categories', data.categories);
 
                     props.dispatch({
