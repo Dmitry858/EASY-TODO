@@ -481,6 +481,12 @@ ul.dropdown-content.select-dropdown {
   margin-top: 0;
 }
 
+.new-password-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .new-password-wrap {
   margin: 0 20px 0 0;
   width: 160px;
@@ -499,12 +505,35 @@ ul.dropdown-content.select-dropdown {
   cursor: pointer;
 }
 
-.chips-categories {
-  width: 50%;
+.add-category-form .input-field {
+  margin: 10px 20px 10px 0;
+}
+
+.category-item {
+  padding: 3px 10px 4px;
+  margin-top: 10px;
+  margin-right: 8px;
+  border-radius: 25px;
+  background-color: #dfdfdf;
+}
+
+.category-item .fa {
+  margin-left: 5px;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+.save-categories-btn {
+  margin-top: -25px;
+  margin-bottom: 20px;
 }
 
 .not-allowed {
   cursor: not-allowed;
+}
+
+.mb0 {
+  margin-bottom: 0 !important;
 }
 
 @media screen and (max-width: 1360px) {
