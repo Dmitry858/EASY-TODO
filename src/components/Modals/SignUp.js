@@ -58,8 +58,8 @@ const SignUp = (props) => {
             })
             .catch( (err) => {
                 console.log(err);
-                setPreloader(false);
-                setSubmit(false);
+                if(!cleanupFunction) setPreloader(false);
+                if(!cleanupFunction) setSubmit(false);
             });
 
         return () => cleanupFunction = true;
@@ -127,6 +127,7 @@ const SignUp = (props) => {
                             type="password" 
                             name="password" 
                             className="validate"
+                            autoComplete="off"
                             value={password} 
                             onChange={event => setPassword(event.target.value.replace(regExp.password, ''))}
                             required

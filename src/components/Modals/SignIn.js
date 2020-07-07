@@ -122,6 +122,7 @@ const SignIn = (props) => {
                             type="password" 
                             name="password" 
                             className="validate" 
+                            autoComplete="off"
                             value={password} 
                             onChange={event => setPassword(event.target.value)}
                         />

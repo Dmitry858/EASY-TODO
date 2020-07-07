@@ -89,7 +89,7 @@ const Lists = (props) => {
                     {(lists && lists.length === 0) &&
                         <>
                             <p>Не найдено ни одного списка задач.</p> 
-                            <a class="waves-effect waves-light btn modal-trigger" href="#modal-create-list">Создать</a>
+                            <a className="waves-effect waves-light btn modal-trigger" href="#modal-create-list">Создать</a>
                         </>
                     }
 

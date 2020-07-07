@@ -20,7 +20,7 @@ const EditTask = (props) => {
         [category, setCategory]   = useState(task.category ? task.category: ''),
         [date, setDate]           = useState(task.date ? new Date(task.date) : ''),
         [time, setTime]           = useState((task.date && task.date.length > 10) ? new Date(task.date) : ''),
-        [status, setStatus]       = useState(task.status),
+        [status, setStatus]       = useState(String(task.status)),
         [preloader, setPreloader] = useState(false),
         [error, setError]         = useState(''),
         [submit, setSubmit]       = useState(false),
