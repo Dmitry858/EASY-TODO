@@ -1,10 +1,11 @@
 import deleteCookie from './deleteCookie';
 
 const signOut = (event, history) => (dispatch) => {
-    event.preventDefault();
+    if(event) event.preventDefault();
 
     deleteCookie('token');
     deleteCookie('userId');
+    deleteCookie('login');
 
     dispatch({
         type: 'HAS_TOKEN',

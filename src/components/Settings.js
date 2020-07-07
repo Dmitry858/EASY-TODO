@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Toast } from 'react-materialize';
 import Topbar from './Topbar';
+import ConfirmDeleteAccount from './Modals/ConfirmDeleteAccount';
 import getCookie from '../utils/getCookie';
 import regExp from '../utils/regExp';
 import config from '../config';
@@ -196,7 +197,10 @@ const Settings = (props) => {
                         </Toast> 
                     </div>
 
-                    <a className="waves-effect waves-light btn-small grey modal-trigger" href="#">Удалить аккаунт</a>
+                    <a className="waves-effect waves-light btn-small grey modal-trigger" href="#modal-delete-account">
+                        Удалить аккаунт
+                    </a>
+                    <ConfirmDeleteAccount history={props.history} />
                 </div>
             </div>
         </React.Fragment>
