@@ -13,12 +13,16 @@ const List = (props) => {
 
     let listName = '',
         {lists, items} = props.tasks,
-        foundEl = items.find(item => item.list_id === parseInt(props.match.params.id, 10));
+        foundEl = items.find(item => item.list_id === parseInt(props.match.params.id, 10)),
+        currentList = lists.find(list => list.list_id === parseInt(props.match.params.id, 10));
 
-    let [preloader, setPreloader] = useState(foundEl ? false : true);
+    let [preloader, setPreloader] = useState(foundEl ? false : true),
+        [isExpired, setIsExpired] = useState(false);
 
     useEffect(() => {
-        if(!foundEl) {
+        let cleanupFunction = false;
+
+        if(!foundEl || currentList.is_private === 0 || isExpired) {
             fetch(config.baseURL + `/web/tasks/search?list_id=${props.match.params.id}`, {
                 method: 'GET',
                 headers: {
@@ -36,12 +40,19 @@ const List = (props) => {
                     });
     
                     setPreloader(false);
+                    setIsExpired(false);
+
+                    setTimeout(function() {
+                        if(!cleanupFunction) setIsExpired(true);
+                    }, 60000);
                 })
                 .catch((err) => {
                     console.log(err);
                 });   
-        }     
-    }, [props.match.params.id]);
+        }
+        
+        return () => cleanupFunction = true;
+    }, [props.match.params.id, isExpired]);
 
     if(!lists) return <NotFound type={'inner'} />;
 
@@ -65,7 +76,7 @@ const List = (props) => {
             }
         })
             .then((response) => {
-                if(response.status === 204) {
+                if(response.status === 204 || response.status === 404) {
                     props.dispatch({
                         type: 'DELETE_ITEM',
                         payload: {

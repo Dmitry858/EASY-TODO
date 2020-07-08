@@ -28,7 +28,22 @@ function addNewList(state, action) {
 
 function addItems(state, action) {
     let foundEl = state.items.find(item => item.list_id == action.payload.list_id);
-    if(foundEl) return state;
+
+    if(foundEl) {
+        if(JSON.stringify(foundEl.tasks) === JSON.stringify(action.payload.tasks)) return state;
+
+        const modifiedItems = state.items.map(item => {
+            if(item.list_id === action.payload.list_id) {
+                item.tasks = action.payload.tasks;
+            }
+            return item;
+        });
+
+        return {
+            lists: state.lists,
+            items: modifiedItems
+        }        
+    }
     
     return {
         lists: state.lists,
