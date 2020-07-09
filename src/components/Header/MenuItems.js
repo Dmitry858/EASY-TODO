@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import signOut from '../../utils/signOut';
 
 const MenuItems = (props) => {
     let {type, tasks} = props;
+
+    let [listsSubmenuHeight, setListsSubmenuHeight] = useState('100%');
 
     if (type === 'outer') {
         return (
@@ -35,13 +37,25 @@ const MenuItems = (props) => {
                     <i className="fa fa-list-alt" aria-hidden="true"></i>Списки задач
                 </NavLink>
                 {(tasks.lists && tasks.lists.length > 0) &&
-                    <ul className="submenu">
-                        {tasks.lists.map((item, i) =>
-                            <li key={i} className="submenu-item">
-                                <NavLink exact to={`/list/${item.list_id}`} className="sidenav-close">{item.name}</NavLink>
-                            </li>
-                        )}
-                    </ul>
+                    <>
+                        <i 
+                            className={listsSubmenuHeight === '0' ? "fa fa-angle-down toggle" : "fa fa-angle-up toggle"} 
+                            aria-hidden="true" 
+                            onClick={() => listsSubmenuHeight === '0' ? setListsSubmenuHeight('100%') : setListsSubmenuHeight('0')}
+                        >
+                        </i>
+
+                        <ul className="submenu" style={{maxHeight: listsSubmenuHeight}}>
+                            {tasks.lists.map((item, i) =>
+                                <li key={i} className="submenu-item">
+                                    <NavLink exact to={`/list/${item.list_id}`} className="sidenav-close">
+                                        <i className="fa fa-circle-o" aria-hidden="true"></i>
+                                        {item.name}
+                                    </NavLink>
+                                </li>
+                            )}
+                        </ul>
+                    </>
                 }
             </li>
             <li>

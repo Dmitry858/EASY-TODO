@@ -45,17 +45,26 @@ a:hover {
   position: relative;
 }
 
-.header-inner .main-menu li.has-submenu::after, .sidenav li.has-submenu::after {
+.header-inner .main-menu li.has-submenu .toggle, .sidenav li.has-submenu .toggle {
   position: absolute;
-  right: 25px;
-  font-family: 'FontAwesome';
+  width: 28px;
+  right: 18px;
   font-size: 18px;
-  content: '\f107';
+  text-align: center;
   color: initial;
+  cursor: pointer;
 }
 
-.header-inner .main-menu li.has-submenu::after {
-  top: 14px;
+.header-inner .main-menu li.has-submenu .submenu, .sidenav li.has-submenu .submenu {
+  overflow: hidden;
+}
+
+.header-inner .main-menu li.has-submenu .toggle {
+  top: 13px;
+}
+
+.sidenav li.has-submenu .toggle {
+  top: 0;
 }
 
 .header-inner .main-menu > li:last-child {
@@ -72,11 +81,23 @@ a:hover {
 }
 
 .submenu .submenu-item a {
-  padding-left: 57px !important;
+  display: flex;
+  align-items: center;
+  padding-left: 52px !important;
+  font-size: 1em;
+}
+
+.submenu .submenu-item a .fa {
+  margin-right: 6px;
+  font-size: 0.7em;
 }
 
 .sidenav .submenu .submenu-item a {
-  padding-left: 67px !important;
+  padding-left: 62px !important;
+}
+
+.sidenav .submenu .submenu-item a .fa {
+  margin-top: 1px;
 }
 
 nav {
@@ -588,7 +609,7 @@ ul.dropdown-content.select-dropdown {
     float: none;
   }
   .header-inner .main-menu a {
-    padding: 13px 25px;
+    padding: 12px 25px;
     color: rgba(0, 0, 0, 0.87);
   }
   .header-inner .logo-wrap {
