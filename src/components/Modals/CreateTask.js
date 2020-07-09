@@ -31,7 +31,8 @@ const CreateTask = (props) => {
         let dateStr = null;
         if(date) {
             let month = (String(date.getMonth()).length === 1) ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-            dateStr = `${date.getFullYear()}-${month}-${date.getDate()}`;
+            let day = (String(date.getDate()).length === 1) ? `0${date.getDate()}` : date.getDate();
+            dateStr = `${date.getFullYear()}-${month}-${day}`;
             if(time) {
                 let hours = (String(time.getHours()).length === 1) ? `0${time.getHours()}` : time.getHours();
                 let min = (String(time.getMinutes()).length === 1) ? `0${time.getMinutes()}` : time.getMinutes();
@@ -146,7 +147,7 @@ const CreateTask = (props) => {
                         <label htmlFor="create-task-name" className={name ? "active" : ""}>Задача</label>
                     </div>
 
-                    <div className="input-group">
+                    <div className="input-group input-group-date">
                         <DatePicker
                             locale="ru"
                             dateFormat="dd.MM.yyyy"

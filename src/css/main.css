@@ -347,10 +347,6 @@ ul.dropdown-content.select-dropdown {
   font-size: 2.8rem;
 }
 
-.chips .input {
-  width: 100% !important;
-}
-
 .tasks-list, .task {
   display: flex;
   justify-content: space-between;
@@ -739,6 +735,9 @@ ul.dropdown-content.select-dropdown {
   }
   .filter-label-text {
     display: none;
+  }
+  .input-group-date .react-datepicker-wrapper {
+    width: 48%;
   }
 }
 
