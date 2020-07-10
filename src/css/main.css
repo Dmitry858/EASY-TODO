@@ -178,7 +178,7 @@ nav .nav-wrapper i {
 }
 
 .dropdown-content li > span {
-  padding: 11px 16px;
+  padding: 11px 12px;
 }
 
 ul.dropdown-content.select-dropdown {
@@ -200,6 +200,15 @@ ul.dropdown-content.select-dropdown {
   padding-left: 40px !important;
 }
 
+.action-checkbox {
+  height: 24px;
+}
+
+.action-checkbox + .input-field {
+  margin-bottom: 0;
+  padding: 0;
+}
+
 .action-btn-wrap {
   margin-left: 15px;
 }
@@ -214,8 +223,22 @@ ul.dropdown-content.select-dropdown {
   opacity: 0.5;
 }
 
+.filter .filter-label.active {
+  color: #bf360c;
+  text-shadow: 0 0 10px #f98967;
+  opacity: 1;
+}
+
+.filter .filter-label-text {
+  margin-left: 3px;
+}
+
 .filter .filter-inputs {
   display: flex;
+}
+
+.filter .filter-inputs .input-field.col {
+  padding: 0;
 }
 
 .filter .input-field {

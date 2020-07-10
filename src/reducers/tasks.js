@@ -1,6 +1,11 @@
 const initialState = {
     lists: sessionStorage.getItem('lists') ? JSON.parse(sessionStorage.getItem('lists')) : null,
-    items: []
+    items: [],
+    filter: {
+        category: null,
+        date: null,
+        status: null
+    }
 };
   
 const actions = {
@@ -9,20 +14,23 @@ const actions = {
     'ADD_ITEMS': addItems,
     'ADD_NEW_ITEM': addNewItem,
     'DELETE_ITEM': deleteItem,
-    'UPDATE_ITEM': updateItem
+    'UPDATE_ITEM': updateItem,
+    'UPDATE_FILTER': updateFilter
 };
   
 function addLists(state, action) {
     return {
         lists: action.payload,
-        items: state.items
+        items: state.items,
+        filter: state.filter
     }
 }
 
 function addNewList(state, action) {
     return {
         lists: [...state.lists, action.payload],
-        items: state.items
+        items: state.items,
+        filter: state.filter
     }
 }
 
@@ -41,13 +49,15 @@ function addItems(state, action) {
 
         return {
             lists: state.lists,
-            items: modifiedItems
+            items: modifiedItems,
+            filter: state.filter
         }        
     }
     
     return {
         lists: state.lists,
-        items: [...state.items, action.payload]
+        items: [...state.items, action.payload],
+        filter: state.filter
     }
 }
 
@@ -59,7 +69,8 @@ function addNewItem(state, action) {
 
     return {
         lists: state.lists,
-        items: modifiedItems
+        items: modifiedItems,
+        filter: state.filter
     }
 }
 
@@ -74,7 +85,8 @@ function deleteItem(state, action) {
 
     return {
         lists: state.lists,
-        items: modifiedItems
+        items: modifiedItems,
+        filter: state.filter
     }
 }
 
@@ -89,7 +101,19 @@ function updateItem(state, action) {
 
     return {
         lists: state.lists,
-        items: modifiedItems
+        items: modifiedItems,
+        filter: state.filter
+    }
+}
+
+function updateFilter(state, action) {
+    let newFilter = state.filter;
+    newFilter[action.payload.key] = action.payload.value;
+
+    return {
+        lists: state.lists,
+        items: state.items,
+        filter: newFilter
     }
 }
 

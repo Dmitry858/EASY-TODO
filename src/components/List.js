@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Topbar from './Topbar';
+import Filter from './Filter';
 import CreateTask from './Modals/CreateTask';
 import EditTask from './Modals/EditTask';
 import NotFound from './NotFound';
-import { Preloader } from 'react-materialize';
+import { Preloader, Select } from 'react-materialize';
 import config from '../config';
 import getCookie from '../utils/getCookie';
 import dateFormatting from '../utils/dateFormatting';
+import isIncludedInTimePeriod from '../utils/isIncludedInTimePeriod';
 
 const List = (props) => {
 
     let listName = '',
-        {lists, items} = props.tasks,
+        { lists, items, filter } = props.tasks,
         foundEl = items.find(item => item.list_id === parseInt(props.match.params.id, 10)),
         currentList = lists.find(list => list.list_id === parseInt(props.match.params.id, 10));
 
@@ -104,6 +106,36 @@ const List = (props) => {
                         </a>
                     </div>
 
+                    {(foundEl && foundEl.tasks.length > 0) && 
+                        <div className="row filter-row">
+                            <div className="input-field action col s10 m8 xl4">
+                                <div className="action-checkbox">
+                                    <label>
+                                        <input type="checkbox" />
+                                        <span></span>
+                                    </label>
+                                </div>
+
+                                <Select
+                                    id="select-action"
+                                    multiple={false}
+                                    value=""
+                                >
+                                    <option value="" disabled selected>Действие</option>
+                                    <option value="1">Удалить</option>
+                                    <option value="2">В архив</option>
+                                    <option value="3">Выполнена</option>
+                                </Select>
+
+                                <div className="action-btn-wrap">
+                                    <button className="waves-effect waves-light btn-small blue darken-2">Применить</button>
+                                </div>
+                            </div>
+
+                            <Filter />
+                        </div>                    
+                    }          
+
                     {preloader && <Preloader active />} 
 
                     {(foundEl && foundEl.tasks.length === 0) &&
@@ -122,38 +154,44 @@ const List = (props) => {
                                 <h6>Статус</h6>
                             </div>
 
-                            {foundEl.tasks.map(task => 
-                                <div key={task.task_id} className="task">
-                                    <div className="task-checkbox">
-                                        <label>
-                                            <input type="checkbox" />
-                                            <span></span>
-                                        </label>
-                                    </div>
+                            {foundEl.tasks.map(task => {
+                                if(filter.category && filter.category !== task.category.toLowerCase()) return null;
+                                if(filter.date && !isIncludedInTimePeriod(filter.date, task.date)) return null;
+                                if(filter.status !== null && filter.status !== task.status) return null;
 
-                                    <div className="task-name">{task.name}</div>
-
-                                    <div className="task-category">
-                                        {task.category ? task.category[0].toUpperCase() + task.category.slice(1) : '-'}
-                                    </div>
-
-                                    <div className="task-date">
-                                        {dateFormatting(task.date)}
-                                    </div>
-
-                                    <div className="task-status">{task.status === 1 ? 'Выполнена' : 'Выполнить'}</div>
-
-                                    <div className="control-buttons">
-                                        <a className="control-button modal-trigger" href={`#modal-edit-task${task.task_id}`}>
-                                            <i className="fa fa-pencil" aria-hidden="true"></i>
-                                        </a>
-                                        <a className="control-button" href="#" onClick={deleteTask.bind(this, task.task_id)}>
-                                            <i className="fa fa-trash-o" aria-hidden="true"></i>
-                                        </a> 
-                                    </div>
-
-                                    <EditTask task={task} listName={listName} />
-                                </div> 
+                                return (
+                                    <div key={task.task_id} className="task">
+                                        <div className="task-checkbox">
+                                            <label>
+                                                <input type="checkbox" />
+                                                <span></span>
+                                            </label>
+                                        </div>
+    
+                                        <div className="task-name">{task.name}</div>
+    
+                                        <div className="task-category">
+                                            {task.category ? task.category[0].toUpperCase() + task.category.slice(1) : '-'}
+                                        </div>
+    
+                                        <div className="task-date">
+                                            {dateFormatting(task.date)}
+                                        </div>
+    
+                                        <div className="task-status">{task.status === 1 ? 'Выполнена' : 'Выполнить'}</div>
+    
+                                        <div className="control-buttons">
+                                            <a className="control-button modal-trigger" href={`#modal-edit-task${task.task_id}`}>
+                                                <i className="fa fa-pencil" aria-hidden="true"></i>
+                                            </a>
+                                            <a className="control-button" href="#" onClick={deleteTask.bind(this, task.task_id)}>
+                                                <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                            </a> 
+                                        </div>
+    
+                                        <EditTask task={task} listName={listName} />
+                                    </div> 
+                                )}
                             )}
                         </>
                     }
