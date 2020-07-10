@@ -216,6 +216,7 @@ ul.dropdown-content.select-dropdown {
 .filter {
   display: flex;
   justify-content: flex-end;
+  position: relative;
 }
 
 .filter .filter-label {
@@ -595,6 +596,21 @@ ul.dropdown-content.select-dropdown {
   }
   .filter .filter-inputs {
     display: none;
+    position: absolute;
+    top: 48px;
+    right: 15px;
+    width: 200px;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    z-index: 5;
+  }
+  .filter .filter-inputs.active {
+    display: flex;
+    flex-direction: column;
+  }
+  .filter .filter-inputs.active .input-field {
+    margin: 0;
   }
   .chips-categories {
     width: 100%;
@@ -758,6 +774,14 @@ ul.dropdown-content.select-dropdown {
   .task .control-button:first-child {
     margin-left: 0;
   }
+  .filter .filter-label {
+    margin-top: 0;
+    padding: 8px 0 8px 10px;
+    font-size: 20px;
+  }
+  .filter-label-text {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -771,14 +795,6 @@ ul.dropdown-content.select-dropdown {
     order: 1;
     width: 100%;
     margin-top: 10px;
-  }
-  .filter .filter-label {
-    margin-top: 0;
-    padding: 8px 0 8px 10px;
-    font-size: 20px;
-  }
-  .filter-label-text {
-    display: none;
   }
   .input-group-date .react-datepicker-wrapper {
     width: 48%;

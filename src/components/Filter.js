@@ -7,9 +7,10 @@ const Filter = (props) => {
     let { categories } = props.user,
         { filter }     = props.tasks;
 
-    let [ filterCategory, setFilterCategory ] = useState(filter.category ? filter.category : ''),
-        [ filterDate, setFilterDate ]         = useState(filter.date ? filter.date : ''),
-        [ filterStatus, setFilterStatus ]     = useState(filter.status ? filter.status : '');
+    let [ filterCategory, setFilterCategory ]     = useState(filter.category ? filter.category : ''),
+        [ filterDate, setFilterDate ]             = useState(filter.date ? filter.date : ''),
+        [ filterStatus, setFilterStatus ]         = useState(filter.status ? filter.status : ''),
+        [ showMobileFilter, setShowMobileFilter ] = useState(false);
 
     function filterHandler(key, event) {
         let value = null;
@@ -28,6 +29,8 @@ const Filter = (props) => {
             if(event.target.value) value = parseInt(event.target.value, 10);
         }
 
+        setShowMobileFilter(false);
+
         props.dispatch({
             type: 'UPDATE_FILTER',
             payload: {
@@ -37,18 +40,24 @@ const Filter = (props) => {
         });
     }
 
+    function toggleMobileFilter() {
+        if(document.body.clientWidth > 1360) return;
+        showMobileFilter ? setShowMobileFilter(false) : setShowMobileFilter(true);
+    }
+
     return (
         <div className="filter col s2 m4 xl8">
             <span 
                 className={filter.category || filter.date || filter.status !== null ?
                           "filter-label active" :
                           "filter-label"}
+                onClick={toggleMobileFilter}
             >
                 <i className="fa fa-filter" aria-hidden="true"></i> 
                 <span className="filter-label-text">Фильтр</span>
             </span>
 
-            <div className="filter-inputs">
+            <div className={showMobileFilter ? "filter-inputs active" : "filter-inputs"}>
                 <Select
                     id="select-filter-categories"
                     multiple={false}

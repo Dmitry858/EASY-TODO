@@ -155,7 +155,8 @@ const List = (props) => {
                             </div>
 
                             {foundEl.tasks.map(task => {
-                                if(filter.category && filter.category !== task.category.toLowerCase()) return null;
+                                if(filter.category && task.category === null) return null;
+                                if(filter.category && task.category && filter.category !== task.category.toLowerCase()) return null;
                                 if(filter.date && !isIncludedInTimePeriod(filter.date, task.date)) return null;
                                 if(filter.status !== null && filter.status !== task.status) return null;
 
