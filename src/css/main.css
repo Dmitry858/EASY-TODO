@@ -159,6 +159,81 @@ nav .nav-wrapper i {
   font-size: 14px;
 }
 
+.get-started {
+  flex-wrap: wrap;
+  padding: 35px 0 55px;
+}
+
+.get-started h1 {
+  margin: 0 auto 1.4rem;
+  font-size: 3.3rem;
+  font-weight: 500;
+}
+
+.get-started h1 span {
+  line-height: 1.5;
+}
+
+.get-started .btn {
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.2em;
+}
+
+.get-started img {
+  width: 90%;
+  margin-right: 30px;
+}
+
+.screenshot img {
+  width: 100%;
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.read-more {
+  margin: 90px 0 60px;
+  padding: 60px 0 80px;
+  background-color: #daf5f5;
+}
+
+.read-more .container p {
+  margin-left: 15%;
+  margin-right: 15%;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.read-more .container a {
+  font-size: 1.1rem;
+}
+
+.read-more .fa-arrow-right {
+  margin-right: 5px;
+}
+
+.relax {
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+}
+
+.relax h3 {
+  width: 85%;
+  margin: 0 auto 2rem;
+  font-size: 2.3rem;
+  line-height: 1.2;
+}
+
+.relax img {
+  width: 100%;
+}
+
+.relax .btn {
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.2em;
+}
+
 .content {
   flex-grow: 1;
   padding: 40px 0 20px;
@@ -728,6 +803,20 @@ ul.dropdown-content.select-dropdown {
   }
 }
 
+@media screen and (max-width: 768px) {
+  .get-started .btn, .relax .btn {
+    height: 44px;
+    line-height: 44px;
+    font-size: initial;
+  }
+  .get-started h1 {
+    font-size: 2.3rem;
+  }
+  .relax h3 {
+    font-size: 1.7rem;
+  }
+}
+
 @media screen and (max-width: 600px) {
   .action {
     padding-left: 15px !important;
@@ -781,6 +870,30 @@ ul.dropdown-content.select-dropdown {
   }
   .filter-label-text {
     display: none;
+  }
+  .get-started {
+    justify-content: center;
+    padding: 0 0 20px;
+  }
+  .get-started img {
+    margin-right: 0;
+    margin-top: 25px;
+  }
+  .read-more {
+    margin: 50px 0 30px;
+    padding: 20px 0 50px;
+  }
+  .read-more .container p {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+  .relax img {
+    width: 90%;
+    margin-bottom: 15px;
+  }
+  .relax h3 {
+    width: 92%;
+    line-height: 1.3;
   }
 }
 
