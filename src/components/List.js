@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Topbar from './Topbar';
 import Filter from './Filter';
+import Action from './Action';
 import CreateTask from './Modals/CreateTask';
 import EditTask from './Modals/EditTask';
 import NotFound from './NotFound';
-import { Preloader, Select } from 'react-materialize';
+import { Preloader } from 'react-materialize';
 import config from '../config';
 import getCookie from '../utils/getCookie';
 import dateFormatting from '../utils/dateFormatting';
@@ -14,12 +15,14 @@ import isIncludedInTimePeriod from '../utils/isIncludedInTimePeriod';
 const List = (props) => {
 
     let listName = '',
+        filteredTasks = [],
         { lists, items, filter } = props.tasks,
         foundEl = items.find(item => item.list_id === parseInt(props.match.params.id, 10)),
         currentList = lists.find(list => list.list_id === parseInt(props.match.params.id, 10));
 
-    let [preloader, setPreloader] = useState(foundEl ? false : true),
-        [isExpired, setIsExpired] = useState(false);
+    let [ preloader, setPreloader ] = useState(foundEl ? false : true),
+        [ isExpired, setIsExpired ] = useState(false),
+        [ selectedTasksId, setSelectedTasksId ] = useState([]);
 
     useEffect(() => {
         let cleanupFunction = false;
@@ -68,6 +71,16 @@ const List = (props) => {
         listName = result.name;
     }
 
+    if(foundEl && foundEl.tasks.length > 0) {
+        filteredTasks = foundEl.tasks.filter(task => {
+            if(filter.category && task.category === null) return false;
+            if(filter.category && task.category && filter.category !== task.category.toLowerCase()) return false;
+            if(filter.date && !isIncludedInTimePeriod(filter.date, task.date)) return false;
+            if(filter.status !== null && filter.status !== task.status) return false;
+            return true;
+        });
+    }
+
     function deleteTask(taskId, event) {
         event.preventDefault();
         
@@ -93,6 +106,29 @@ const List = (props) => {
             });
     }
 
+    function taskSelectionHandler(taskId, event) {
+        let foundId = selectedTasksId.find(id => id === taskId);
+        if(event.target.checked) {
+            if(foundId) return;
+            setSelectedTasksId([...selectedTasksId, taskId]);
+        } else {
+            if(!foundId) return;
+            setSelectedTasksId(selectedTasksId.filter(id => id !== taskId));
+        }
+    }
+
+    function selectAllTasks(value) {
+        if(!value) setSelectedTasksId([]);
+
+        if(value) {
+            const newIdsArr = [];
+            filteredTasks.forEach(task => {
+                if(task) newIdsArr.push(task.task_id);
+            });
+            setSelectedTasksId(newIdsArr);
+        }
+    }
+
     return (
         <React.Fragment>
             <Topbar history={props.history} />
@@ -108,30 +144,12 @@ const List = (props) => {
 
                     {(foundEl && foundEl.tasks.length > 0) && 
                         <div className="row filter-row">
-                            <div className="input-field action col s10 m8 xl4">
-                                <div className="action-checkbox">
-                                    <label>
-                                        <input type="checkbox" />
-                                        <span></span>
-                                    </label>
-                                </div>
-
-                                <Select
-                                    id="select-action"
-                                    multiple={false}
-                                    value=""
-                                >
-                                    <option value="" disabled selected>Действие</option>
-                                    <option value="1">Удалить</option>
-                                    <option value="2">В архив</option>
-                                    <option value="3">Выполнена</option>
-                                </Select>
-
-                                <div className="action-btn-wrap">
-                                    <button className="waves-effect waves-light btn-small blue darken-2">Применить</button>
-                                </div>
-                            </div>
-
+                            <Action 
+                                listId={parseInt(props.match.params.id, 10)}
+                                selectedTasksId={selectedTasksId} 
+                                filteredTasks={filteredTasks}
+                                selectAllTasks={selectAllTasks} 
+                            />
                             <Filter />
                         </div>                    
                     }          
@@ -147,24 +165,25 @@ const List = (props) => {
 
                     {(foundEl && foundEl.tasks.length > 0) &&
                         <>
-                            <div className="cols-name">
-                                <h6>Задача</h6>
-                                <h6>Категория</h6>
-                                <h6>Дата</h6>
-                                <h6>Статус</h6>
-                            </div>
+                            {filteredTasks.length > 0 && 
+                                <div className="cols-name">
+                                    <h6>Задача</h6>
+                                    <h6>Категория</h6>
+                                    <h6>Дата</h6>
+                                    <h6>Статус</h6>
+                                </div>
+                            }
 
-                            {foundEl.tasks.map(task => {
-                                if(filter.category && task.category === null) return null;
-                                if(filter.category && task.category && filter.category !== task.category.toLowerCase()) return null;
-                                if(filter.date && !isIncludedInTimePeriod(filter.date, task.date)) return null;
-                                if(filter.status !== null && filter.status !== task.status) return null;
-
+                            {filteredTasks.map(task => {
                                 return (
                                     <div key={task.task_id} className="task">
                                         <div className="task-checkbox">
                                             <label>
-                                                <input type="checkbox" />
+                                                <input 
+                                                    type="checkbox"
+                                                    checked={selectedTasksId.includes(task.task_id)}
+                                                    onChange={taskSelectionHandler.bind(this, task.task_id)} 
+                                                />
                                                 <span></span>
                                             </label>
                                         </div>
@@ -172,7 +191,7 @@ const List = (props) => {
                                         <div className="task-name">{task.name}</div>
     
                                         <div className="task-category">
-                                            {task.category ? task.category[0].toUpperCase() + task.category.slice(1) : '-'}
+                                            {(task.category && task.category !== 'Без категории') ? task.category[0].toUpperCase() + task.category.slice(1) : '-'}
                                         </div>
     
                                         <div className="task-date">
@@ -194,6 +213,7 @@ const List = (props) => {
                                     </div> 
                                 )}
                             )}
+                            {filteredTasks.length === 0 && <p>Задач не найдено. Попробуйте изменить параметры фильтра.</p>}
                         </>
                     }
                 </div>

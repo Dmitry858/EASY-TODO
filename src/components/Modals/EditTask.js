@@ -46,7 +46,9 @@ const EditTask = (props) => {
         const changes = {};
 
         if(name !== task.name) changes.name = name;
-        if(category !== task.category) changes.category = category;
+        if(category !== task.category) {
+            category === '' ? changes.category = null : changes.category = category;
+        };
         changes.date = dateStr;
         if(status !== task.status) changes.status = parseInt(status, 10);
 
@@ -178,10 +180,10 @@ const EditTask = (props) => {
                             value={category}
                             onChange={event => setCategory(event.target.value)}
                         >
-                            <option value="0" disabled>
+                            <option value="" disabled>
                                 Категория
                             </option>
-                            <option value="">
+                            <option value="Без категории">
                                 Без категории
                             </option>
                             {categories && 

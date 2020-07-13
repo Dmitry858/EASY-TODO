@@ -64,7 +64,7 @@ const Filter = (props) => {
                     value={filterCategory}
                     onChange={filterHandler.bind(this, 'category')}
                 >
-                    <option value="" selected>Все категории</option>
+                    <option value="">Все категории</option>
                     {categories && 
                         categories.map((cat, i) =>
                             <option key={i} value={cat}>
@@ -80,7 +80,7 @@ const Filter = (props) => {
                     value={filterDate}
                     onChange={filterHandler.bind(this, 'date')}
                 >
-                    <option value="" selected>Все периоды</option>
+                    <option value="">Все периоды</option>
                     <option value="today">Сегодня</option>
                     <option value="week">Ближайшие 7 дней</option>
                     <option value="month">Ближайшие 30 дней</option>
@@ -92,7 +92,7 @@ const Filter = (props) => {
                     value={filterStatus}
                     onChange={filterHandler.bind(this, 'status')}
                 >
-                    <option value="" selected>Все статусы</option>
+                    <option value="">Все статусы</option>
                     <option value="0">Выполнить</option>
                     <option value="1">Выполнена</option>
                 </Select>
