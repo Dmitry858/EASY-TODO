@@ -1,5 +1,5 @@
 const initialState = {
-    lists: sessionStorage.getItem('lists') ? JSON.parse(sessionStorage.getItem('lists')) : null,
+    lists: localStorage.getItem('lists') ? JSON.parse(localStorage.getItem('lists')) : null,
     items: [],
     filter: {
         category: null,

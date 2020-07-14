@@ -59,7 +59,7 @@ const EditList = (props) => {
                     let i = newLists.findIndex(item => item.list_id == data.list_id);
                     newLists.splice(i, 1, data);
 
-                    sessionStorage.setItem('lists', JSON.stringify(newLists));
+                    localStorage.setItem('lists', JSON.stringify(newLists));
 
                     props.dispatch({
                         type: 'ADD_LISTS',

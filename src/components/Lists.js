@@ -8,6 +8,7 @@ import { Preloader } from 'react-materialize';
 import ReactTooltip from 'react-tooltip';
 import config from '../config';
 import getCookie from '../utils/getCookie';
+import isActualDataInLocalStorage from '../utils/isActualDataInLocalStorage';
 
 const Lists = (props) => {
 
@@ -16,7 +17,7 @@ const Lists = (props) => {
     let [preloader, setPreloader] = useState(lists ? false : true);
 
     useEffect(() => {
-        if(!lists) {
+        if(!lists || !isActualDataInLocalStorage('lists')) {
             fetch(config.baseURL + '/web/lists/search?lists=all', {
                 method: 'GET',
                 headers: {
@@ -25,7 +26,10 @@ const Lists = (props) => {
             })
                 .then(response => response.json())
                 .then((data) => {
-                    sessionStorage.setItem('lists', JSON.stringify(data));
+                    let dateExpired = new Date();
+                    dateExpired.setMinutes(dateExpired.getMinutes() + 2);
+                    localStorage.setItem('lists', JSON.stringify(data));
+                    localStorage.setItem('listsDateExpired', dateExpired.toString());
 
                     props.dispatch({
                         type: 'ADD_LISTS',
@@ -58,7 +62,7 @@ const Lists = (props) => {
 
                     lists.splice(i, 1);
 
-                    sessionStorage.setItem('lists', JSON.stringify(lists));
+                    localStorage.setItem('lists', JSON.stringify(lists));
 
                     props.dispatch({
                         type: 'ADD_LISTS',

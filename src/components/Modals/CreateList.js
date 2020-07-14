@@ -47,7 +47,7 @@ const CreateList = (props) => {
                 if (data.user_id) {
 
                     let newLists = [...props.tasks.lists, data];
-                    sessionStorage.setItem('lists', JSON.stringify(newLists));
+                    localStorage.setItem('lists', JSON.stringify(newLists));
 
                     props.dispatch({
                         type: 'ADD_NEW_LIST',

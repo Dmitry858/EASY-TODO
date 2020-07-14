@@ -26,7 +26,8 @@ const history = qhistory(
 const App = (props) => {
 
     if (!getCookie('token')) {
-        sessionStorage.removeItem('lists');
+        localStorage.removeItem('lists');
+        localStorage.removeItem('listsDateExpired');
         localStorage.removeItem('categories');
 
         return (
