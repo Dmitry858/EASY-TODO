@@ -40,6 +40,8 @@ const SignUp = (props) => {
                     setCookie('login', data.login, options);
                     localStorage.setItem('categories', data.categories);
 
+                    props.history.push('/');
+
                     props.dispatch({
                         type: 'HAS_TOKEN',
                         payload: true

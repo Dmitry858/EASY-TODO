@@ -19,8 +19,8 @@ const Footer = (props) => {
 
             {props.type === 'outer' &&
                 <>
-                    <SignUp />
-                    <SignIn />                
+                    <SignUp history={props.history} />
+                    <SignIn history={props.history} />                
                 </>
             }
         </footer>

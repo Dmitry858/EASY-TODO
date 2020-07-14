@@ -7,6 +7,8 @@ const signOut = (event, history) => (dispatch) => {
     deleteCookie('userId');
     deleteCookie('login');
 
+    history.push('/');
+
     dispatch({
         type: 'HAS_TOKEN',
         payload: false
@@ -19,8 +21,6 @@ const signOut = (event, history) => (dispatch) => {
         type: 'ADD_LISTS',
         payload: null
     });
-
-    history.push('/');
 };
 
 export default signOut;

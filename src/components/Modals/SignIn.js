@@ -42,6 +42,8 @@ const SignIn = (props) => {
                     setCookie('login', data.login, options);
                     localStorage.setItem('categories', data.categories);
 
+                    props.history.push('/');
+
                     props.dispatch({
                         type: 'HAS_TOKEN',
                         payload: true
@@ -50,7 +52,7 @@ const SignIn = (props) => {
                         type: 'UPDATE_CATEGORIES',
                         payload: JSON.parse(data.categories)
                     });
-                    if(!cleanupFunction) setPreloader(false);
+                    if(!cleanupFunction) setPreloader(false); 
                 }
 
                 if (data.error) {

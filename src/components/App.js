@@ -41,7 +41,7 @@ const App = (props) => {
                     />
                 </Switch>
 
-                <Footer type='outer' />
+                <Footer type='outer' history={history} />
             </Router>
         );
     } else {
@@ -65,7 +65,7 @@ const App = (props) => {
                     />
                 </Switch>
 
-                <Footer type='inner' />
+                <Footer type='inner' history={history} />
             </Router>         
         );
     }
