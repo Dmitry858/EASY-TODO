@@ -608,12 +608,12 @@ ul.dropdown-content.select-dropdown {
   width: 160px;
 }
 
-.new-password-wrap input {
+.new-password-wrap input, #password-signup, #password {
   padding-right: 22px !important;
   box-sizing: border-box !important;
 }
 
-.new-password-wrap .fa {
+.see-password {
   position: absolute;
   top: 17px;
   right: 0;
@@ -659,6 +659,11 @@ ul.dropdown-content.select-dropdown {
 
 .mb0 {
   margin-bottom: 0 !important;
+}
+
+::-ms-reveal {
+  width: 0;
+  height: 0;
 }
 
 @media screen and (max-width: 1360px) {
@@ -924,5 +929,9 @@ ul.dropdown-content.select-dropdown {
   .tasks-list .list-name {
     width: auto;
     max-width: 140px;
+  }
+  label[for="agree"] span {
+    font-size: 0.9rem !important;
+    line-height: 1.2 !important;
   }
 }

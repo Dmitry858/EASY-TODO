@@ -6,12 +6,13 @@ import setCookie from '../../utils/setCookie';
 
 const SignIn = (props) => {
 
-    let [login, setLogin] = useState('');
-    let [password, setPassword] = useState('');
-    let [remember, setRemember] = useState(true);
-    let [preloader, setPreloader] = useState(false);
-    let [error, setError] = useState('');
-    let [submit, setSubmit] = useState(false);
+    let [login, setLogin]               = useState(''),
+        [password, setPassword]         = useState(''),
+        [remember, setRemember]         = useState(true),
+        [preloader, setPreloader]       = useState(false),
+        [error, setError]               = useState(''),
+        [submit, setSubmit]             = useState(false),
+        [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         if (!submit) return;
@@ -73,6 +74,7 @@ const SignIn = (props) => {
         setLogin('');
         setPassword('');
         setError('');
+        setShowPassword(false);
     }
 
     function submitData(event) {
@@ -80,6 +82,10 @@ const SignIn = (props) => {
         setError('');
         setPreloader(true);
         setSubmit(true);
+    }
+
+    function showPasswordHandler() {
+        showPassword ? setShowPassword(false) : setShowPassword(true);
     }
 
     return (
@@ -121,7 +127,7 @@ const SignIn = (props) => {
                     <div className="input-field">
                         <input 
                             id="password" 
-                            type="password" 
+                            type={showPassword ? "text" : "password"}
                             name="password" 
                             className="validate" 
                             autoComplete="off"
@@ -129,6 +135,7 @@ const SignIn = (props) => {
                             onChange={event => setPassword(event.target.value)}
                         />
                         <label htmlFor="password">Пароль</label>
+                        <i className={showPassword ? "fa fa-eye see-password" : "fa fa-eye-slash see-password"} aria-hidden="true" onClick={showPasswordHandler}></i>
                     </div>
                     <div className="checkbox-wrap">
                         <Checkbox
@@ -141,7 +148,7 @@ const SignIn = (props) => {
                         />
                     </div>
                     <div className="submit-wrap">
-                        <button className="waves-effect waves-green btn">Войти</button>
+                        <button className="waves-effect btn">Войти</button>
                     </div>
                 </form>
             </div>

@@ -133,7 +133,7 @@ const Settings = (props) => {
                                         value={newPassword} 
                                         onChange={event => setNewPassword(event.target.value.replace(regExp.password, ''))}
                                     />
-                                    <i className={showPassword ? "fa fa-eye" : "fa fa-eye-slash"} aria-hidden="true" onClick={showPasswordHandler}></i>
+                                    <i className={showPassword ? "fa fa-eye see-password" : "fa fa-eye-slash see-password"} aria-hidden="true" onClick={showPasswordHandler}></i>
                                 </div>
                                 <input className="waves-effect waves-light btn-small" type="submit" value="Сохранить" />
                                 <a className="waves-effect waves-light btn-small grey btn-cancel" href="#" onClick={cancelChangePassword}>Отмена</a>

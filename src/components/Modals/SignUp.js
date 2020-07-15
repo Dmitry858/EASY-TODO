@@ -7,12 +7,13 @@ import regExp from '../../utils/regExp';
 
 const SignUp = (props) => {
 
-    let [login, setLogin] = useState('');
-    let [password, setPassword] = useState('');
-    let [agreement, setAgreement] = useState(true);
-    let [preloader, setPreloader] = useState(false);
-    let [error, setError] = useState('');
-    let [submit, setSubmit] = useState(false);
+    let [login, setLogin]               = useState(''),
+        [password, setPassword]         = useState(''),
+        [agreement, setAgreement]       = useState(true),
+        [preloader, setPreloader]       = useState(false),
+        [error, setError]               = useState(''),
+        [submit, setSubmit]             = useState(false),
+        [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         if (!submit) return;
@@ -71,6 +72,7 @@ const SignUp = (props) => {
         setLogin('');
         setPassword('');
         setError('');
+        setShowPassword(false);
     }
 
     function submitData(event) {
@@ -84,6 +86,10 @@ const SignUp = (props) => {
 
         setPreloader(true);
         setSubmit(true);
+    }
+
+    function showPasswordHandler() {
+        showPassword ? setShowPassword(false) : setShowPassword(true);
     }
 
     return (
@@ -126,7 +132,7 @@ const SignUp = (props) => {
                     <div className="input-field">
                         <input 
                             id="password-signup" 
-                            type="password" 
+                            type={showPassword ? "text" : "password"}
                             name="password" 
                             className="validate"
                             autoComplete="off"
@@ -136,6 +142,7 @@ const SignUp = (props) => {
                         />
                         <label htmlFor="password-signup">Пароль</label>
                         <span className="helper-text">не менее 6 символов</span>
+                        <i className={showPassword ? "fa fa-eye see-password" : "fa fa-eye-slash see-password"} aria-hidden="true" onClick={showPasswordHandler}></i>
                     </div>
                     <div className="checkbox-wrap">
                         <Checkbox
@@ -148,7 +155,7 @@ const SignUp = (props) => {
                         />
                     </div>
                     <div className="submit-wrap">
-                        <button className="waves-effect waves-green btn">Зарегистрироваться</button>
+                        <button className="waves-effect btn">Зарегистрироваться</button>
                     </div>
                 </form>
             </div>
