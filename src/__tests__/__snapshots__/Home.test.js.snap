@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home testing Home matches the snapshot 1`] = `
+<div>
+  <div
+    class="content"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="get-started row valign-wrapper"
+      >
+        <div
+          class="col m6 center-align"
+        >
+          <h1
+            class="center-align"
+          >
+            Приведите дела 
+            <br />
+            в порядок с 
+            <br />
+            <span>
+              EASY TODO
+            </span>
+          </h1>
+          <a
+            class="btn btn-large modal-trigger waves-effect"
+            href="#modal-signup"
+          >
+            Начать
+          </a>
+        </div>
+        <div
+          class="col m6 center-align"
+        >
+          <img
+            alt="Приведите дела в порядок"
+            src="image1.png"
+          />
+        </div>
+      </div>
+      <div
+        class="screenshot"
+      >
+        <img
+          alt="Приложение EASY TODO"
+          src="screen.jpg"
+        />
+      </div>
+    </div>
+    <div
+      class="read-more"
+    >
+      <div
+        class="container center-align"
+      >
+        <p>
+          Позвольте себе не думать постоянно о ежедневных заботах, переместите свои дела из головы в планировщик задач и обретите спокойствие.
+        </p>
+        <a
+          href="/about"
+        >
+          <i
+            aria-hidden="true"
+            class="fa fa-arrow-right"
+          />
+          Узнать подробнее о приложении
+        </a>
+      </div>
+    </div>
+    <div
+      class="container"
+    >
+      <div
+        class="relax row valign-wrapper"
+      >
+        <div
+          class="col m6 center-align"
+        >
+          <img
+            alt="Приведите дела в порядок"
+            src="image2.png"
+          />
+        </div>
+        <div
+          class="col m6 center-align"
+        >
+          <h3
+            class="center-align"
+          >
+            EASY TODO поможет организовать задачи наилучшим образом, чтобы у вас освободилось больше времени для отдыха
+          </h3>
+          <a
+            class="btn btn-large modal-trigger waves-effect"
+            href="#modal-signup"
+          >
+            Начать
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
