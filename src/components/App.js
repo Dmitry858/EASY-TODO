@@ -16,6 +16,7 @@ import Help from './Help';
 import Settings from './Settings';
 import NotFound from './NotFound';
 import getCookie from '../utils/getCookie';
+import cleanLocalStorage from '../utils/cleanLocalStorage';
 
 const history = qhistory(
     createBrowserHistory({}),
@@ -26,9 +27,7 @@ const history = qhistory(
 const App = (props) => {
 
     if (!getCookie('token')) {
-        localStorage.removeItem('lists');
-        localStorage.removeItem('listsDateExpired');
-        localStorage.removeItem('categories');
+        cleanLocalStorage();
 
         return (
             <Router history={history}>
