@@ -65,6 +65,7 @@ const Filter = (props) => {
                     onChange={filterHandler.bind(this, 'category')}
                 >
                     <option value="">Все категории</option>
+                    <option value="без категории">Без категории</option>
                     {categories && 
                         categories.map((cat, i) =>
                             <option key={i} value={cat}>

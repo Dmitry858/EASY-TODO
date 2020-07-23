@@ -26,7 +26,9 @@ const EditTask = (props) => {
         [submit, setSubmit]       = useState(false),
         [isModalOpen, setIsModalOpen] = useState(false);
 
-    if(category && !categories.includes(category)) categories = [category, ...categories];
+    if(category && !categories.includes(category) && category !== 'без категории') {
+        categories = [category, ...categories];
+    }
 
     useEffect(() => {
         if(!submit) return;
@@ -47,7 +49,7 @@ const EditTask = (props) => {
 
         if(name !== task.name) changes.name = name;
         if(category !== task.category) {
-            category === '' ? changes.category = null : changes.category = category;
+            category === '' ? changes.category = 'без категории' : changes.category = category;
         };
         changes.date = dateStr;
         if(status !== task.status) changes.status = parseInt(status, 10);
@@ -183,7 +185,7 @@ const EditTask = (props) => {
                             <option value="" disabled>
                                 Категория
                             </option>
-                            <option value="Без категории">
+                            <option value="без категории">
                                 Без категории
                             </option>
                             {categories && 

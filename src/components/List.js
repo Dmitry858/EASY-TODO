@@ -191,7 +191,7 @@ const List = (props) => {
                                         <div className="task-name">{task.name}</div>
     
                                         <div className="task-category">
-                                            {(task.category && task.category !== 'Без категории') ? task.category[0].toUpperCase() + task.category.slice(1) : '-'}
+                                            {(task.category && task.category !== 'без категории') ? task.category[0].toUpperCase() + task.category.slice(1) : '-'}
                                         </div>
     
                                         <div className="task-date">

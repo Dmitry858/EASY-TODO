@@ -44,7 +44,7 @@ const CreateTask = (props) => {
             'user_id': parseInt(getCookie('userId'), 10),
             'list_id': parseInt(props.listId, 10),
             'name': name,
-            'category': category === '' ? null : category,
+            'category': category === '' ? 'без категории' : category,
             'date': dateStr,
             'status': 0
         }
@@ -190,7 +190,7 @@ const CreateTask = (props) => {
                             <option value="" disabled>
                                 Категория
                             </option>
-                            <option value="Без категории">
+                            <option value="без категории">
                                 Без категории
                             </option>
                             {categories && 
