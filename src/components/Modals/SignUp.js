@@ -51,6 +51,10 @@ const SignUp = (props) => {
                         type: 'UPDATE_CATEGORIES',
                         payload: JSON.parse(data.categories)
                     });
+                    props.dispatch({
+                        type: 'IS_USER_NEW',
+                        payload: true
+                    });
                     if(!cleanupFunction) setPreloader(false);
                 }
 

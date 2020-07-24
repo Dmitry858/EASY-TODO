@@ -14,6 +14,7 @@ import Archive from './Archive';
 import Analytics from './Analytics';
 import Help from './Help';
 import Settings from './Settings';
+import Greeting from './Greeting';
 import NotFound from './NotFound';
 import getCookie from '../utils/getCookie';
 import cleanLocalStorage from '../utils/cleanLocalStorage';
@@ -66,7 +67,9 @@ const App = (props) => {
                 </Switch>
 
                 <Footer type='inner' history={history} />
-            </Router>         
+
+                {props.user.isNew && <Greeting />}
+            </Router>
         );
     }
 
