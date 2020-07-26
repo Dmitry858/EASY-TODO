@@ -5,15 +5,23 @@ import { Select } from 'react-materialize';
 const Filter = (props) => {
 
     let { categories } = props.user,
-        { filter }     = props.tasks;
+        { lists }      = props.tasks,
+        { filter }     = props.archived ? props.archive : props.tasks;
 
-    let [ filterCategory, setFilterCategory ]     = useState(filter.category ? filter.category : ''),
+    let [ filterListId, setFilterListId ]         = useState(filter.listId ? filter.listId : ''),
+        [ filterCategory, setFilterCategory ]     = useState(filter.category ? filter.category : ''),
         [ filterDate, setFilterDate ]             = useState(filter.date ? filter.date : ''),
         [ filterStatus, setFilterStatus ]         = useState(filter.status ? filter.status : ''),
         [ showMobileFilter, setShowMobileFilter ] = useState(false);
 
     function filterHandler(key, event) {
         let value = null;
+
+        if(key === 'listId') {
+            setFilterListId(event.target.value);
+            if(event.target.value) value = parseInt(event.target.value, 10);
+        }
+
         if(key === 'category') {
             setFilterCategory(event.target.value);
             if(event.target.value) value = event.target.value.toLowerCase();
@@ -32,7 +40,7 @@ const Filter = (props) => {
         setShowMobileFilter(false);
 
         props.dispatch({
-            type: 'UPDATE_FILTER',
+            type: props.archived ? 'UPDATE_ARCHIVE_FILTER' : 'UPDATE_FILTER',
             payload: {
                 key: key,
                 value: value
@@ -45,10 +53,18 @@ const Filter = (props) => {
         showMobileFilter ? setShowMobileFilter(false) : setShowMobileFilter(true);
     }
 
+    function isFilterActive() {
+        if(props.archived) {
+            return (filter.listId || filter.category || filter.status !== null) ? true : false;
+        } else {
+            return (filter.category || filter.date || filter.status !== null) ? true : false;
+        }
+    }
+
     return (
         <div className="filter col s2 m4 xl8">
             <span 
-                className={filter.category || filter.date || filter.status !== null ?
+                className={ isFilterActive() ?
                           "filter-label active" :
                           "filter-label"}
                 onClick={toggleMobileFilter}
@@ -58,6 +74,24 @@ const Filter = (props) => {
             </span>
 
             <div className={showMobileFilter ? "filter-inputs active" : "filter-inputs"}>
+                {props.archived && 
+                    <Select
+                        id="select-filter-lists"
+                        multiple={false}
+                        value={String(filterListId)}
+                        onChange={filterHandler.bind(this, 'listId')}
+                    >
+                        <option value="">Все списки</option>
+                        {lists && 
+                            lists.map((list, i) =>
+                                <option key={i} value={list.list_id}>
+                                    {list.name}
+                                </option>                               
+                            )
+                        }
+                    </Select>                
+                }
+
                 <Select
                     id="select-filter-categories"
                     multiple={false}
@@ -75,17 +109,19 @@ const Filter = (props) => {
                     }
                 </Select>
 
-                <Select
-                    id="select-filter-date"
-                    multiple={false}
-                    value={filterDate}
-                    onChange={filterHandler.bind(this, 'date')}
-                >
-                    <option value="">Все периоды</option>
-                    <option value="today">Сегодня</option>
-                    <option value="week">Ближайшие 7 дней</option>
-                    <option value="month">Ближайшие 30 дней</option>
-                </Select>
+                {!props.archived && 
+                    <Select
+                        id="select-filter-date"
+                        multiple={false}
+                        value={filterDate}
+                        onChange={filterHandler.bind(this, 'date')}
+                    >
+                        <option value="">Все периоды</option>
+                        <option value="today">Сегодня</option>
+                        <option value="week">Ближайшие 7 дней</option>
+                        <option value="month">Ближайшие 30 дней</option>
+                    </Select>
+                }
 
                 <Select
                     id="select-filter-status"

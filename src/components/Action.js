@@ -5,7 +5,7 @@ import config from '../config';
 import getCookie from '../utils/getCookie';
 
 const Action = (props) => {
-    let { listId, selectedTasksId, filteredTasks, selectAllTasks } = props;
+    let { listId, selectedTasksId, filteredTasks, selectAllTasks, archived } = props;
 
     let [ action, setAction ] = useState('');
 
@@ -20,13 +20,20 @@ const Action = (props) => {
                 })
                     .then((response) => {
                         if(response.status === 204 || response.status === 404) {
-                            props.dispatch({
-                                type: 'DELETE_ITEM',
-                                payload: {
-                                    list_id: listId,
-                                    task_id: id
-                                }
-                            });
+                            if(archived) {
+                                props.dispatch({
+                                    type: 'DELETE_ARCHIVE_ITEM',
+                                    payload: id
+                                });
+                            } else {
+                                props.dispatch({
+                                    type: 'DELETE_ITEM',
+                                    payload: {
+                                        list_id: listId,
+                                        task_id: id
+                                    }
+                                });
+                            }
                         }
                     })
                     .catch((err) => {

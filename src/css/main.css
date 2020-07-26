@@ -333,15 +333,15 @@ ul.dropdown-content.select-dropdown {
 }
 
 .cols-name h6:first-child {
-  width: calc(54% - 110px);
+  width: calc(54% - 132px);
 }
 
 .cols-name h6:nth-child(2) {
-  width: 16.6%;
+  width: 16%;
 }
 
 .cols-name h6:nth-child(3) {
-  width: 18.6%;
+  width: 17.5%;
 }
 
 .cols-name h6:nth-child(4) {
@@ -486,6 +486,8 @@ ul.dropdown-content.select-dropdown {
 
 .tasks-list .control-buttons, .task .control-buttons {
   display: flex;
+  justify-content: flex-end;
+  min-width: 141px;
 }
 
 .tasks-list .control-button, .task .control-button {
@@ -534,6 +536,7 @@ ul.dropdown-content.select-dropdown {
 
 .task {
   justify-content: flex-start;
+  min-height: 86px;
 }
 
 .task .task-checkbox {
@@ -546,8 +549,18 @@ ul.dropdown-content.select-dropdown {
 }
 
 .task .task-name {
+  position: relative;
   width: calc(54% - 129px);
   padding-right: 15px;
+  line-height: 1.3;
+}
+
+.task .task-name .list-name-label {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  font-size: 0.8em;
+  font-style: italic;
 }
 
 .task .task-category {
@@ -562,6 +575,10 @@ ul.dropdown-content.select-dropdown {
 
 .task .task-status {
   width: 12%;
+}
+
+.task.archived {
+  opacity: 0.7;
 }
 
 .settings-row {
@@ -750,9 +767,6 @@ ul.dropdown-content.select-dropdown {
   .chips-categories {
     width: 100%;
   }
-}
-
-@media screen and (min-width: 601px) and (max-width: 1360px) {
   .task-name, .task-category, .task-date, .task-status {
     font-size: 0.9em;
   }
@@ -863,6 +877,71 @@ ul.dropdown-content.select-dropdown {
   }
 }
 
+@media screen and (max-width: 800px) {
+  .cols-name {
+    display: none;
+  }
+  .action {
+    padding-left: 15px !important;
+  }
+  .task {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: initial;
+  }
+  .task .task-checkbox {
+    display: none;
+  }
+  .task .task-name, .task .task-category, .task .task-date, .task .task-status {
+    position: relative;
+    margin-bottom: 18px;
+    padding-top: 20px;
+  }
+  .task .task-name::before, .task .task-category::before, .task .task-date::before, .task .task-status::before {
+    position: absolute;
+    top: -4px;
+    left: 0;
+    opacity: 0.5;
+    font-size: 0.8em;
+  }
+  .task .task-name {
+    width: 100%;
+    font-weight: 500;
+  }
+  .task .task-name::before {
+    content: 'Задача';
+    font-weight: 400;
+  }
+  .task .task-category, .task .task-date {
+    width: 32%;
+  }
+  .task .task-category::before {
+    content: 'Категория';
+  }
+  .task .task-date::before {
+    content: 'Дата';
+  }
+  .task .task-status {
+    width: 26%;
+  }
+  .task .task-status::before {
+    content: 'Статус';
+  }
+  .task .control-buttons {
+    justify-content: flex-start;
+    min-width: 104px;
+  }
+  .task .control-button:first-child {
+    margin-left: 0;
+  }
+  .task.archived .task-name {
+    margin-bottom: 26px;
+  }
+  .task.archived .task-name .list-name-label {
+    font-weight: 400;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .get-started .btn, .relax .btn {
     height: 44px;
@@ -878,51 +957,6 @@ ul.dropdown-content.select-dropdown {
 }
 
 @media screen and (max-width: 600px) {
-  .action {
-    padding-left: 15px !important;
-  }
-  .cols-name {
-    display: none;
-  }
-  .task {
-    flex-direction: column;
-    align-items: initial;
-  }
-  .task .task-checkbox {
-    display: none;
-  }
-  .task .task-name, .task .task-category, .task .task-date, .task .task-status {
-    position: relative;
-    width: 100%;
-    margin-bottom: 18px;
-    padding-top: 20px;
-  }
-  .task .task-name::before, .task .task-category::before, .task .task-date::before, .task .task-status::before {
-    position: absolute;
-    top: -4px;
-    left: 0;
-    opacity: 0.5;
-    font-size: 0.8em;
-  }
-  .task .task-name {
-    font-weight: 500;
-  }
-  .task .task-name::before {
-    content: 'Задача';
-    font-weight: 400;
-  }
-  .task .task-category::before {
-    content: 'Категория';
-  }
-  .task .task-date::before {
-    content: 'Дата';
-  }
-  .task .task-status::before {
-    content: 'Статус';
-  }
-  .task .control-button:first-child {
-    margin-left: 0;
-  }
   .filter .filter-label {
     margin-top: 0;
     padding: 8px 0 8px 10px;
@@ -954,6 +988,21 @@ ul.dropdown-content.select-dropdown {
   .relax h3 {
     width: 92%;
     line-height: 1.3;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .task {
+    padding: 15px;
+  }
+  .task .task-category, .task .task-date, .task .control-buttons {
+    width: 50%;
+  }
+  .task .control-buttons {
+    align-items: flex-end;
+  }
+  .task .task-status {
+    margin-bottom: 0;
   }
 }
 
