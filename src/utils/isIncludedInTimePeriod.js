@@ -16,11 +16,15 @@ function isIncludedInTimePeriod(period, date) {
     }
 
     if(period === 'week' || period === 'month') {
-        let increase = period === 'week' ? 7 : 30;
+        let today = new Date(),
+            taskDate = new Date(date),
+            increase = period === 'week' ? 7 : 30;
+
+        today.setHours(0, 0);
         periodDate.setDate(periodDate.getDate() + increase);
         periodDate.setHours(23, 59);
 
-        return (new Date(date) <= periodDate) ? true : false;
+        return (taskDate >= today && taskDate <= periodDate) ? true : false;
     }
 
     return true;
