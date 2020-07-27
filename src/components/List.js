@@ -9,14 +9,14 @@ import NotFound from './NotFound';
 import { Preloader } from 'react-materialize';
 import config from '../config';
 import getCookie from '../utils/getCookie';
-import isIncludedInTimePeriod from '../utils/isIncludedInTimePeriod';
+import filterTasks from '../utils/filterTasks';
 
 const List = (props) => {
 
     let listName = '',
-        filteredTasks = [],
         { lists, items, filter } = props.tasks,
         foundEl = items.find(item => item.list_id === parseInt(props.match.params.id, 10)),
+        filteredTasks = (foundEl && foundEl.tasks.length > 0) ? filterTasks(foundEl.tasks, filter) : [],
         currentList = lists.find(list => list.list_id === parseInt(props.match.params.id, 10));
 
     let [ preloader, setPreloader ] = useState(foundEl ? false : true),
@@ -68,16 +68,6 @@ const List = (props) => {
         if(!result) return <NotFound type={'inner'} />;
 
         listName = result.name;
-    }
-
-    if(foundEl && foundEl.tasks.length > 0) {
-        filteredTasks = foundEl.tasks.filter(task => {
-            if(filter.category && task.category === null) return false;
-            if(filter.category && task.category && filter.category !== task.category.toLowerCase()) return false;
-            if(filter.date && !isIncludedInTimePeriod(filter.date, task.date)) return false;
-            if(filter.status !== null && filter.status !== task.status) return false;
-            return true;
-        });
     }
 
     function taskSelectionHandler(taskId, event) {

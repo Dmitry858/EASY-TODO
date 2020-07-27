@@ -7,11 +7,12 @@ import Action from './Action';
 import Task from './Task';
 import config from '../config';
 import getCookie from '../utils/getCookie';
+import filterTasks from '../utils/filterTasks';
 
 const Archive = (props) => {
 
     let { items, filter } = props.archive,
-        filteredTasks     = [];
+        filteredTasks     = filterTasks(items, filter);
 
     let [ preloader, setPreloader ]             = useState(items && items.length > 0 ? false : true),
         [ selectedTasksId, setSelectedTasksId ] = useState([]),
@@ -42,8 +43,6 @@ const Archive = (props) => {
             .then(response => response.json())
             .then((data) => {
                 preloader && setPreloader(false);
-
-                console.log(data);
                 
                 if(offset === 0) {
                     props.dispatch({
@@ -72,15 +71,15 @@ const Archive = (props) => {
         };
     }, [offset]);
 
-    if(items && items.length > 0) {
-        filteredTasks = items.filter(task => {
-            if(filter.listId !== null && filter.listId !== task.list_id) return false;
-            if(filter.category && filter.category === null) return false;
-            if(filter.category && task.category && filter.category !== task.category.toLowerCase()) return false;
-            if(filter.status !== null && filter.status !== task.status) return false;
-            return true;
-        });
-    }
+    // if(items && items.length > 0) {
+    //     filteredTasks = items.filter(task => {
+    //         if(filter.listId !== null && filter.listId !== task.list_id) return false;
+    //         if(filter.category && filter.category === null) return false;
+    //         if(filter.category && task.category && filter.category !== task.category.toLowerCase()) return false;
+    //         if(filter.status !== null && filter.status !== task.status) return false;
+    //         return true;
+    //     });
+    // }
 
     function taskSelectionHandler(taskId, event) {
         let foundId = selectedTasksId.find(id => id === taskId);
