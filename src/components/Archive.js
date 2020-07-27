@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Preloader } from 'react-materialize';
 import Topbar from './Topbar';
@@ -11,13 +11,29 @@ import getCookie from '../utils/getCookie';
 const Archive = (props) => {
 
     let { items, filter } = props.archive,
-        filteredTasks            = [];
+        filteredTasks     = [];
 
     let [ preloader, setPreloader ]             = useState(items && items.length > 0 ? false : true),
-        [ selectedTasksId, setSelectedTasksId ] = useState([]);
+        [ selectedTasksId, setSelectedTasksId ] = useState([]),
+        [ offset, setOffset ]                   = useState(0),
+        [ scrollListener, setScrollListener ]   = useState(true);
+
+    const contentBlock = useRef(null);
+
+    function scrollHandler() {
+        let coord = contentBlock.current.getBoundingClientRect().bottom;
+
+        if(coord <= document.body.clientHeight - 50 && scrollListener) {
+            setPreloader(true);
+            setOffset(offset + config.offsetFactor);
+        }
+    }
 
     useEffect(() => {
-        fetch(config.baseURL + '/web/tasks/search?in_archive=1', {
+        if(setScrollListener) window.addEventListener('scroll', scrollHandler);
+        setScrollListener(false);
+
+        fetch(config.baseURL + `/web/tasks/search?in_archive=1&offset=${offset}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${getCookie('token')}`
@@ -26,16 +42,35 @@ const Archive = (props) => {
             .then(response => response.json())
             .then((data) => {
                 preloader && setPreloader(false);
+
+                console.log(data);
                 
-                props.dispatch({
-                    type: 'UPDATE_ARCHIVE_ITEMS',
-                    payload: data
-                });
+                if(offset === 0) {
+                    props.dispatch({
+                        type: 'UPDATE_ARCHIVE_ITEMS',
+                        payload: data
+                    });
+                } else {
+                    props.dispatch({
+                        type: 'ADD_ARCHIVE_ITEMS',
+                        payload: data
+                    });   
+                }
+
+                if(data.length === 0 || data.length < config.offsetFactor) {
+                    window.removeEventListener('scroll', scrollHandler);
+                }
+
+                if(data.length === config.offsetFactor) setScrollListener(true);
             })
             .catch((err) => {
                 console.log(err);
-            });   
-    }, []);
+            });
+
+        return function cleanup() {
+            window.removeEventListener('scroll', scrollHandler);
+        };
+    }, [offset]);
 
     if(items && items.length > 0) {
         filteredTasks = items.filter(task => {
@@ -74,7 +109,7 @@ const Archive = (props) => {
         <React.Fragment>
             <Topbar history={props.history} />
 
-            <div className="content content-inner">
+            <div className="content content-inner" ref={contentBlock}>
                 <div className="container">
                     <div className="title-wrap">
                         <h1>Архив</h1>

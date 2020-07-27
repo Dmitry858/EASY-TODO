@@ -9,6 +9,7 @@ const initialState = {
   
 const actions = {
     'UPDATE_ARCHIVE_ITEMS': updateArchiveItems,
+    'ADD_ARCHIVE_ITEMS': addArchiveItems,
     'DELETE_ARCHIVE_ITEM': deleteArchiveItem,
     'UPDATE_ARCHIVE_FILTER': updateArchiveFilter
 };
@@ -16,6 +17,13 @@ const actions = {
 function updateArchiveItems(state, action) {
     return {
         items: action.payload,
+        filter: state.filter
+    }
+}
+
+function addArchiveItems(state, action) {
+    return {
+        items: [...state.items, ...action.payload],
         filter: state.filter
     }
 }
