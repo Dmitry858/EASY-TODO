@@ -119,7 +119,8 @@ const Filter = (props) => {
                         value={filterDate}
                         onChange={filterHandler.bind(this, 'date')}
                     >
-                        <option value="">Все периоды</option>
+                        <option value="">Все даты</option>
+                        <option value="-">Без даты</option>
                         <option value="today">Сегодня</option>
                         <option value="week">Ближайшие 7 дней</option>
                         <option value="month">Ближайшие 30 дней</option>

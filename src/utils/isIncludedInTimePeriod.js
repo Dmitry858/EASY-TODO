@@ -1,4 +1,6 @@
 function isIncludedInTimePeriod(period, date) {
+    if(period === '-' && !date) return true;
+    if(period === '-' && date) return false;
     if(!date) return false;
 
     let periodDate = new Date();
