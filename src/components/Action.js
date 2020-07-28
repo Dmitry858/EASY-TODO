@@ -5,13 +5,13 @@ import config from '../config';
 import getCookie from '../utils/getCookie';
 
 const Action = (props) => {
-    let { listId, selectedTasksId, filteredTasks, selectAllTasks, archived } = props;
+    let { listId, selectedTasksId, filteredTasks, selectAllTasks, archived, changeOffset } = props;
 
     let [ action, setAction ] = useState('');
 
     function applyAction() {
         if(action === 'delete' && selectedTasksId.length > 0) {
-            selectedTasksId.forEach(id => {
+            selectedTasksId.forEach((id, i) => {
                 fetch(config.baseURL + `/web/tasks/${id}`, {
                     method: 'DELETE',
                     headers: {
@@ -25,6 +25,9 @@ const Action = (props) => {
                                     type: 'DELETE_ARCHIVE_ITEM',
                                     payload: id
                                 });
+                                if(changeOffset && i === selectedTasksId.length - 1) {
+                                    changeOffset(config.offsetFactor - selectedTasksId.length);
+                                }
                             } else {
                                 props.dispatch({
                                     type: 'DELETE_ITEM',

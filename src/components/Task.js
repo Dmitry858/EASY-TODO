@@ -8,7 +8,7 @@ import dateFormatting from '../utils/dateFormatting';
 
 const Task = (props) => {
 
-    const { task, taskSelectionHandler, selectedTasksId, listName, archived } = props;
+    const { task, taskSelectionHandler, selectedTasksId, listName, archived, changeOffset } = props;
 
     function deleteTask(taskId, event) {
         event.preventDefault();
@@ -26,6 +26,7 @@ const Task = (props) => {
                             type: 'DELETE_ARCHIVE_ITEM',
                             payload: taskId
                         });
+                        if(changeOffset) changeOffset(config.offsetFactor - 1);
                     } else {
                         props.dispatch({
                             type: 'DELETE_ITEM',
@@ -77,6 +78,7 @@ const Task = (props) => {
                             task: data
                         }
                     });
+                    if(changeOffset) changeOffset(config.offsetFactor - 1);
                 }
             })
             .catch( (err) => {

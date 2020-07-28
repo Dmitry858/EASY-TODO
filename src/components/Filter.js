@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Select } from 'react-materialize';
+import config from '../config';
 
 const Filter = (props) => {
 
@@ -46,6 +47,8 @@ const Filter = (props) => {
                 value: value
             }
         });
+
+        if(props.changeOffset) props.changeOffset(config.offsetFactor);
     }
 
     function toggleMobileFilter() {

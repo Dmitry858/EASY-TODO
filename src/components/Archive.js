@@ -16,25 +16,39 @@ const Archive = (props) => {
 
     let [ preloader, setPreloader ]             = useState(items && items.length > 0 ? false : true),
         [ selectedTasksId, setSelectedTasksId ] = useState([]),
-        [ offset, setOffset ]                   = useState(0),
-        [ scrollListener, setScrollListener ]   = useState(true);
+        [ offset, setOffset ]                   = useState(null),
+        [ isFullArchive, setIsFullArchive ]     = useState(false);
 
     const contentBlock = useRef(null);
 
-    function scrollHandler() {
-        let coord = contentBlock.current.getBoundingClientRect().bottom;
-
-        if(coord <= document.body.clientHeight - 50 && scrollListener) {
-            setPreloader(true);
-            setOffset(offset + config.offsetFactor);
+    function throttle(callback, delay) {
+        let isWaiting = false;
+        return function () {
+            if (!isWaiting) {
+                callback.apply(this, arguments);
+                isWaiting = true;
+                setTimeout(() => {
+                    isWaiting = false;
+                }, delay);
+            }
         }
     }
+    
+    const scrollHandler = throttle(() => {
+        let coord = contentBlock.current.getBoundingClientRect().bottom;
+
+        if(coord <= document.body.clientHeight - 50) {
+            setPreloader(true);
+            setOffset(offset === null ? config.offsetFactor : offset + config.offsetFactor);
+        }
+    }, 50);
 
     useEffect(() => {
-        if(setScrollListener) window.addEventListener('scroll', scrollHandler);
-        setScrollListener(false);
+        if(isFullArchive) return;
 
-        fetch(config.baseURL + `/web/tasks/search?in_archive=1&offset=${offset}`, {
+        window.addEventListener('scroll', scrollHandler);
+
+        fetch(config.baseURL + `/web/tasks/search?in_archive=1&offset=${offset === null ? 0 : offset}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${getCookie('token')}`
@@ -44,7 +58,7 @@ const Archive = (props) => {
             .then((data) => {
                 preloader && setPreloader(false);
                 
-                if(offset === 0) {
+                if(offset === null || offset === 0) {
                     props.dispatch({
                         type: 'UPDATE_ARCHIVE_ITEMS',
                         payload: data
@@ -53,14 +67,13 @@ const Archive = (props) => {
                     props.dispatch({
                         type: 'ADD_ARCHIVE_ITEMS',
                         payload: data
-                    });   
+                    });
                 }
 
                 if(data.length === 0 || data.length < config.offsetFactor) {
                     window.removeEventListener('scroll', scrollHandler);
+                    setIsFullArchive(true);
                 }
-
-                if(data.length === config.offsetFactor) setScrollListener(true);
             })
             .catch((err) => {
                 console.log(err);
@@ -70,16 +83,6 @@ const Archive = (props) => {
             window.removeEventListener('scroll', scrollHandler);
         };
     }, [offset]);
-
-    // if(items && items.length > 0) {
-    //     filteredTasks = items.filter(task => {
-    //         if(filter.listId !== null && filter.listId !== task.list_id) return false;
-    //         if(filter.category && filter.category === null) return false;
-    //         if(filter.category && task.category && filter.category !== task.category.toLowerCase()) return false;
-    //         if(filter.status !== null && filter.status !== task.status) return false;
-    //         return true;
-    //     });
-    // }
 
     function taskSelectionHandler(taskId, event) {
         let foundId = selectedTasksId.find(id => id === taskId);
@@ -104,6 +107,10 @@ const Archive = (props) => {
         }
     }
 
+    function changeOffset(value) {
+        setOffset(offset === null ? value : offset + value);
+    }
+
     return (
         <React.Fragment>
             <Topbar history={props.history} />
@@ -124,8 +131,9 @@ const Archive = (props) => {
                                     filteredTasks={filteredTasks}
                                     selectAllTasks={selectAllTasks} 
                                     archived={true}
+                                    changeOffset={changeOffset}
                                 />
-                                <Filter archived={true} />
+                                <Filter archived={true} changeOffset={changeOffset} />
                             </div>
 
                             { filteredTasks.length > 0 && 
@@ -152,6 +160,7 @@ const Archive = (props) => {
                                         selectedTasksId={selectedTasksId}
                                         listName={listName}
                                         archived={true}
+                                        changeOffset={changeOffset}
                                     />
                                 )}
                             ) }
