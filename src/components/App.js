@@ -8,6 +8,7 @@ import Header from './Header/Header';
 import Footer from './Footer';
 import Home from './Home';
 import About from './About';
+import Policy from './Policy';
 import Lists from './Lists';
 import List from './List';
 import Archive from './Archive';
@@ -36,6 +37,7 @@ const App = (props) => {
 
                 <Switch>
                     <Route exact path='/about' component={About} />
+                    <Route exact path='/policy' component={Policy} />
                     <Route exact path='/' component={Home} />
                     <Route
                         render={(props) => <NotFound type={'outer'} {...props} />}
@@ -54,6 +56,10 @@ const App = (props) => {
                     <Route 
                         exact path='/about' 
                         render={(props) => <About type={'inner'} {...props} />}
+                    />
+                    <Route 
+                        exact path='/policy' 
+                        render={(props) => <Policy type={'inner'} {...props} />}
                     />
                     <Route exact path='/help' component={Help} />
                     <Route exact path='/settings' component={Settings} />

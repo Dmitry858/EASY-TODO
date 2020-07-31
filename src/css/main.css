@@ -718,6 +718,10 @@ ul.dropdown-content.select-dropdown {
   color: initial;
 }
 
+.policy-link {
+  margin-left: 5px;
+}
+
 @keyframes slide-up-left {
   from {
     right: -350px;
@@ -1032,7 +1036,14 @@ ul.dropdown-content.select-dropdown {
 
 @media screen and (max-width: 375px) {
   h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+  .title-wrap .btn-floating {
+    margin-bottom: 0;
+  }
+  .filter-row {
+    margin-top: -6px;
   }
   .tasks-list {
     padding: 20px 15px;
@@ -1044,5 +1055,10 @@ ul.dropdown-content.select-dropdown {
   label[for="agree"] span {
     font-size: 0.9rem !important;
     line-height: 1.2 !important;
+  }
+  .policy-link {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
   }
 }
