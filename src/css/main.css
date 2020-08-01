@@ -236,7 +236,7 @@ nav .nav-wrapper i {
 
 .content {
   flex-grow: 1;
-  padding: 40px 0 20px;
+  padding: 40px 0 30px;
 }
 
 .content p {
@@ -720,6 +720,25 @@ ul.dropdown-content.select-dropdown {
 
 .policy-link {
   margin-left: 5px;
+}
+
+.screen-btn {
+  position: relative;
+  top: 8px;
+  width: 30px;
+  margin-left: 4px;
+}
+
+.screen-control-btns {
+  float: left;
+  width: 136px;
+  margin-right: 8px;
+}
+
+.screen-filter {
+  position: relative;
+  top: 4px;
+  width: 78px;
 }
 
 @keyframes slide-up-left {
