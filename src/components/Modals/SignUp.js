@@ -17,14 +17,16 @@ const SignUp = (props) => {
 
     useEffect(() => {
         if (!submit) return;
-        let cleanupFunction = false;
+        let cleanupFunction = false,
+            now = new Date();
 
         fetch(config.baseURL + '/web/signup', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 'username': login,
-                'password': password
+                'password': password,
+                'timezone': -now.getTimezoneOffset()/60
             })
         })
             .then( response => response.json() )
