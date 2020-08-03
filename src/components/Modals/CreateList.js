@@ -37,7 +37,8 @@ const CreateList = (props) => {
                 'name': name,
                 'description': description,
                 'is_private': Number(isPrivate),
-                'guests': guestsLogins
+                'guests': guestsLogins,
+                'list_created': new Date()
             })
         })
             .then( response => response.json() )
