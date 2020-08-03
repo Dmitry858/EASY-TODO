@@ -52,7 +52,11 @@ const EditTask = (props) => {
             category === '' ? changes.category = 'без категории' : changes.category = category;
         };
         changes.date = dateStr;
-        if(status !== task.status) changes.status = parseInt(status, 10);
+        if(status !== task.status) {
+            changes.status = parseInt(status, 10);
+            if(changes.status === 1) changes.task_completed = new Date();
+            if(changes.status === 0) changes.task_completed = null;
+        }
 
         fetch(config.baseURL + `/web/tasks/${task.task_id}`, {
             method: 'PATCH',
