@@ -46,7 +46,8 @@ const CreateTask = (props) => {
             'name': name,
             'category': category === '' ? 'без категории' : category,
             'date': dateStr,
-            'status': 0
+            'status': 0,
+            'task_created': new Date()
         }
 
         fetch(config.baseURL + '/web/tasks', {
