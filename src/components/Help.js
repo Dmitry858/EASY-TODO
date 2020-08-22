@@ -14,7 +14,7 @@ const Help = (props) => {
                         <h1>Помощь</h1>
                     </div>
 
-                    <p>Извините, данный раздел находится в разработке.</p> 
+                    <p>Если у вас возникли какие-либо сложности или вопросы в процессе работы с приложением, напишите нам на <a href="mailto:support@easy-todo.ru">support@easy-todo.ru</a>.</p> 
                 </div>
             </div>
         </React.Fragment>
