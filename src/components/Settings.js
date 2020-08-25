@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Toast } from 'react-materialize';
 import Topbar from './Topbar';
+import Notice from './Notice';
 import ConfirmDeleteAccount from './Modals/ConfirmDeleteAccount';
 import getCookie from '../utils/getCookie';
 import regExp from '../utils/regExp';
@@ -179,23 +180,7 @@ const Settings = (props) => {
                         }
                     </form>
 
-                    <h6 className="settings-subtitle">Уведомления</h6>
-                    <div className="settings-row">
-                        <Toast
-                            options={{
-                                html: 'Данная функция в разработке'
-                            }}
-                        >
-                            <div className="switch">
-                                <label>
-                                    Выкл
-                                    <input type="checkbox" disabled />
-                                    <span className="lever"></span>
-                                    Вкл
-                                </label>
-                            </div>
-                        </Toast> 
-                    </div>
+                    <Notice />
 
                     <a className="waves-effect waves-light btn-small grey modal-trigger" href="#modal-delete-account">
                         Удалить аккаунт
